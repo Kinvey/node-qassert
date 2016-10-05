@@ -66,4 +66,8 @@ if (qassert.notDeepEqual(1, 2) != "delegated 1 2") throw new Error("notDeepEqual
 if (qassert.strictEqual(1, 2) != "delegated 1 2") throw new Error("strictEqual was not delegated");
 if (qassert.notStrictEqual(1, 2) != "delegated 1 2") throw new Error("notStrictEqual was not delegated");
 if (qassert.throws('fn') != "delegated fn undefined") throw new Error("throws was not delegated");
+if (qassert.throws('fn', {}) != "delegated fn [object Object]") throw new Error("throws was not delegated");
+if (qassert.throws('fn', 'err') != "delegated fn err") throw new Error("throws was not delegated");
+if (qassert.throws('fn', 'err', 'msg') != "delegated fn err") throw new Error("throws was not delegated");
 if (qassert.doesNotThrow('fn') != "delegated fn undefined") throw new Error("doesNotThrow was not delegated");
+

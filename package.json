@@ -1,0 +1,14 @@
+{
+    "name": "qassert",
+    "version": "1.0.0",
+    "description": "nicer, improved `assert`",
+    "main": "qassert.js",
+    "keywords": ["assert"],
+    "dependencies": {
+    },
+    "devDependencies": {
+    },
+    "scripts": {
+        "test": "nodejs test-*"
+    }
+}

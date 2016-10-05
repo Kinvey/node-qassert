@@ -10,7 +10,7 @@
 var assert = require('assert');
 
 var qassert = {
-    fail: _fail,
+    // delegated assert methods
     ok: _assert,
     equal: _equal,
     notEqual: _notEqual,
@@ -21,6 +21,9 @@ var qassert = {
     throws: _throws,
     doesNotThrow: _doesNotThrow,
     ifError: _ifError,
+
+    // new test methods
+    fail: _fail,
     contains: _contains,
     strictContains: _strictContains,
     within: _within,
@@ -71,10 +74,11 @@ function _strictEqual(a,b,m) {
 function _notStrictEqual(a,b,m) {
     return _wrapAssertion(assert.notStrictEqual, _notStrictEqual, m, a, b, '!==') }
 function _throws(a,b,m) {
-    switch (arguments.length) {
-    case 1: b = m = undefined; break;
-    case 2: if (typeof b !== 'object') { m = b; b = undefined; }; break;
-    }
+// TODO: is this arg steering necessary, or does assert() do it already?
+//    switch (arguments.length) {
+//    case 1: b = m = undefined; break;
+//    case 2: if (typeof b !== 'object') { m = b; b = undefined; }; break;
+//    }
     return _wrapAssertion(assert.throws, _throws, m, a, b, 'throws') }
 function _doesNotThrow(a,m) {
     return _wrapAssertion(assert.doesNotThrow, _doesNotThrow, m, a, undefined, 'doesNotThrow') }
