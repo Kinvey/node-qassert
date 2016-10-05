@@ -70,3 +70,27 @@ same as `qassert.equal`.
 ### qassert.within( a, b, distance )
 
 check that `a` is within `distance` units of `b`, ie that `abs(a - b) <= abs(distance)`.
+
+### qassert.contains( a, b )
+
+check that `a` contains `b`.
+
+B is contained in a if object a has all the properties with the same values as b,
+or if array a includes b, or if string a has b as a substring.  Non-container types contain
+themselves, but the inclusion test is coercive, so eg `true` contains `1`.
+
+Specifically, when a is a
+- `string` - check that b occurs as a substring of a.  If b is not already a string, it it coerced.
+- `Buffer` - check that b occurs as a sequence of bytes in a.  If b is not a buffer, it is coerced.
+- `Array` - check that one of the elements of `a` is b, or if b is an object, contains b.
+If b itself is an array, then check that all elements of `b` are contained in `a` (To test that the array b
+occurs in a, check that a contain the array of [`b`].)
+- `Object` - check that one of the fields of `a` is b.  If b is also an object,
+check that all the key-value properties of b are contained in a.
+
+
+Change Log
+----------
+
+- 1.1.0 - `within`, `contains`
+- 1.0.0 - mostly just `assert`

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Andras Radics
+ * Copyright (C) 2015-2016 Andras Radics
  * Licensed under the Apache License, Version 2.0
  *
  * Qnit assertions.
@@ -8,6 +8,7 @@
 'use strict';
 
 var assert = require('assert');
+var __contains = require('./contains.js');
 
 var qassert = {
     // delegated assert methods
@@ -31,6 +32,7 @@ var qassert = {
     // aliases
     equals: _equal,
     assert: _assert,
+    contain: _contains,
 
     assertionCount: 0,
     _wrapAssertion: _wrapAssertion,
@@ -121,8 +123,8 @@ function annotateError( err, message ) {
     return err;
 }
 
-
 function contains( a, b, asStrict ) {
+    return __contains(a, b, asStrict);
 }
 
 function within( a, b, distance ) {
