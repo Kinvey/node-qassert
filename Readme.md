@@ -57,7 +57,7 @@ check that the code block does not throw an error.
 
 fail the test if the error is set
 
-`qassert` test methods
+`qassert` methods
 ----------------------
 
 ### qassert.assert( condition, [message] )
