@@ -8,6 +8,7 @@ It normalizes error messages and includes some new test methods.
 
 - `fail()` method to error out and not continue
 - `within()` method to numeric range-test two values
+- `contains` method to test inclusion in strings, arrays, objects
 
 
 `assert` methods
