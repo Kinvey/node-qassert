@@ -10,10 +10,8 @@ It normalizes error messages and includes some new test methods.
 - `within()` method to numeric range-test two values
 
 
-Functions
----------
-
-Assert methods:
+`assert` methods
+----------------
 
 ### qassert.ok( condition, [message] )
 
@@ -58,7 +56,8 @@ check that the code block does not throw an error.
 
 fail the test if the error is set
 
-New test functions:
+`qassert` test methods
+----------------------
 
 ### qassert.assert( condition, [message] )
 
