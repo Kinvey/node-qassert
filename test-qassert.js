@@ -50,8 +50,21 @@ assert.throws(function(){ qassert.ifError([]) });
 assert.throws(function(){ qassert.ifError(Infinity) });
 assert.throws(function(){ qassert.ifError(-Infinity) });
 
+// within does not throw if true
+assert.doesNotThrow(function(){ qassert.within(1, 2, 1) });
+assert.doesNotThrow(function(){ qassert.within(-1, -2, 1) });
+assert.doesNotThrow(function(){ qassert.within(-1, -2, -1) });
+assert.doesNotThrow(function(){ qassert.within(-1, 2, 3) });
+assert.doesNotThrow(function(){ qassert.within(-1, 0, 1) });
+assert.doesNotThrow(function(){ qassert.within(1, 2, 1e6) });
+assert.doesNotThrow(function(){ qassert.within(0.1, 0.9, 0.8) });
+
+// within throws if not true
+assert.throws(function(){ qassert.within(-1, 1, 1.999) });
+assert.throws(function(){ qassert.within(-1, 0, 0.999) });
+assert.throws(function(){ qassert.within(1, 2, .5) });
+
 // TODO:
-// within() does a range test
 // contains() test for inclusion
 
 // check that other qassert methods invoke the assert method

@@ -126,5 +126,6 @@ function contains( a, b, asStrict ) {
 }
 
 function within( a, b, distance ) {
+    if (distance < 0) distance = -distance;
     return (a < b) ? (b - a <= distance) : (a - b <= distance);
 }

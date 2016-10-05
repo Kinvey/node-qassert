@@ -67,3 +67,7 @@ same as `qassert.ok`.
 ### qassert.equals( a, b, [message] )
 
 same as `qassert.equal`.
+
+### qassert.within( a, b, distance )
+
+check that `a` is within `distance` units of `b`, ie that `abs(a - b) <= abs(distance)`.
