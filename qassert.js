@@ -48,13 +48,14 @@ function _fail(m) { fail("test", "failed", "test does not pass" + (m ? ": " + m 
 
 
 function _assert(p, m) {
+    // assertionCount must be a `this` property so we can re-attach the test methods to eg test runners
     this.assertionCount += 1;
     if (!p) fail(p, "truthy", m, "is", _assert); }
 
 // patch the assertion error to include the user message alongside the built-in inspected values
 // assert() shows the user message instead of the inspected values, which is less than helpful
 function _wrapAssertion( assertion, startStackFunction, message, actual, expected, operator ) {
-    qassert.assertionCount += 1;
+    this.assertionCount += 1;
     try {
         return assertion(actual, expected);
     }
@@ -64,28 +65,28 @@ function _wrapAssertion( assertion, startStackFunction, message, actual, expecte
 }
 
 function _equal(a,b,m) {
-    return _wrapAssertion(assert.equal, _equal, m, a, b, '==') }
+    return this._wrapAssertion(assert.equal, _equal, m, a, b, '==') }
 function _notEqual(a,b,m) {
-    return _wrapAssertion(assert.notEqual, _notEqual, m, a, b, '!=') }
+    return this._wrapAssertion(assert.notEqual, _notEqual, m, a, b, '!=') }
 function _deepEqual(a,b,m) {
-    return _wrapAssertion(assert.deepEqual, _deepEqual, m, a, b, 'deepEqual') }
+    return this._wrapAssertion(assert.deepEqual, _deepEqual, m, a, b, 'deepEqual') }
 function _notDeepEqual(a,b,m) {
-    return _wrapAssertion(assert.notDeepEqual, _notDeepEqual, m, a, b, 'notDeepEqual') }
+    return this._wrapAssertion(assert.notDeepEqual, _notDeepEqual, m, a, b, 'notDeepEqual') }
 function _strictEqual(a,b,m) {
-    return _wrapAssertion(assert.strictEqual, _strictEqual, m, a, b, '===') }
+    return this._wrapAssertion(assert.strictEqual, _strictEqual, m, a, b, '===') }
 function _notStrictEqual(a,b,m) {
-    return _wrapAssertion(assert.notStrictEqual, _notStrictEqual, m, a, b, '!==') }
+    return this._wrapAssertion(assert.notStrictEqual, _notStrictEqual, m, a, b, '!==') }
 function _throws(a,b,m) {
 // TODO: is this arg steering necessary, or does assert() do it already?
 //    switch (arguments.length) {
 //    case 1: b = m = undefined; break;
 //    case 2: if (typeof b !== 'object') { m = b; b = undefined; }; break;
 //    }
-    return _wrapAssertion(assert.throws, _throws, m, a, b, 'throws') }
+    return this._wrapAssertion(assert.throws, _throws, m, a, b, 'throws') }
 function _doesNotThrow(a,m) {
-    return _wrapAssertion(assert.doesNotThrow, _doesNotThrow, m, a, undefined, 'doesNotThrow') }
+    return this._wrapAssertion(assert.doesNotThrow, _doesNotThrow, m, a, undefined, 'doesNotThrow') }
 function _ifError(a,m) {
-    return _wrapAssertion(assert.ifError, _ifError, m, a, 'truthy', 'Error is') }
+    return this._wrapAssertion(assert.ifError, _ifError, m, a, 'truthy', 'Error is') }
 
 // add-ons
 function _contains(a,b,m) {
