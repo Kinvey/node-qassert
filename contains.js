@@ -61,28 +61,27 @@ function _arrayContains( arr, item, asStrict ) {
     }
     else {
         if (asStrict) return arr.indexOf(item);
-        for (var i=0; i<arr.length; i++) if (deepEquals(arr[i], item, asStrict)) return true;
+        for (var i=0; i<arr.length; i++) if (deepEqual(arr[i], item, asStrict)) return true;
         return false;
     }
 }
 
 // test whether the object obj contains the item as a subset
-// TODO: compare inclusion with deepEquals() to match eg [1,2] to [1,2]
 function _objectContains( obj, item, asStrict ) {
     if (isContainerObject(item)) {
         // all fields from item must be present
-        for (var k in item) if (!deepEquals(item[k], obj[k], asStrict)) return false;
+        for (var k in item) if (!deepEqual(item[k], obj[k], asStrict)) return false;
         return true;
     }
     else {
         // any field may equal item
-        for (var k in obj) if (deepEquals(obj[k], item, asStrict)) return true;
+        for (var k in obj) if (deepEqual(obj[k], item, asStrict)) return true;
         return false;
     }
 }
 
-function deepEquals( a, b, asStrict ) {
-    var compar = asStrict && assert.strictDeepEquals ? assert.strictDeepEquals : assert.deepEquals;
+function deepEqual( a, b, asStrict ) {
+    var compar = asStrict && assert.strictDeepEquals ? assert.strictDeepEqual : assert.deepEqual;
     try { compar(a, b); return true }
     catch (err) { return false }
 }
