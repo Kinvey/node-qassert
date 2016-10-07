@@ -85,7 +85,7 @@ Specifically, when a is a
 - `Buffer` - check that b occurs as a sequence of bytes in a.  If b is not a buffer, it is coerced.
 - `Array` - check that one of the elements of `a` is b, or if b is an object, contains b.
 If b itself is an array, then check that all elements of `b` are contained in `a` (To test that the array b
-occurs in a, check that a contain the array of [`b`].)
+occurs in a, check that a contains the array of [`b`].)
 - `Object` - check that one of the fields of `a` is b.  If b is also an object,
 check that all the key-value properties of b are contained in a.
 
