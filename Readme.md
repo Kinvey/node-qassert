@@ -76,9 +76,10 @@ check that `a` is within `distance` units of `b`, ie that `abs(a - b) <= abs(dis
 
 check that `a` contains `b`.
 
-B is contained in a if object a has all the properties with the same values as b,
-or if array a includes b, or if string a has b as a substring.  Non-container types contain
-themselves, but the inclusion test is coercive, so eg `true` contains `1`.
+B is contained in a if object a has b as a property or has all the properties of
+object b with the same values as in b, or if array a includes b, or if string a has
+b as a substring.  Non-container types contain themselves, but the inclusion test
+is coercive, so eg `true` contains `1`.
 
 Specifically, when a is a
 - `string` - check that b occurs as a substring of a.  If b is not already a string, it it coerced.

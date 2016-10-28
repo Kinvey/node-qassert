@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2015-2016 Andras Radics
+ * Licensed under the Apache License, Version 2.0
+ */
+
 'use strict';
 
 var assert = require('assert');
@@ -67,7 +72,7 @@ assert.throws(function(){ qassert.within(1, 2, .5) });
 // TODO:
 // contains() test for inclusion
 
-// check that other qassert methods invoke the assert method
+// check that other qassert methods invoke the same-named method on assert
 var savedAssert = {};
 for (var k in assert) savedAssert[k] = assert[k];
 for (var k in assert) assert[k] = function(a, b){ return "delegated " + a + " " + b };
