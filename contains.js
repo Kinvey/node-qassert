@@ -38,7 +38,7 @@ function contains( a, b, asStrict ) {
         }
         else {
             // array must contain element
-            return _arrayContains(a, b, asStrict) >= 0;
+            return _arrayContains(a, b, asStrict);
         }
     }
 
@@ -53,7 +53,7 @@ function contains( a, b, asStrict ) {
 
 // test whether any array element contains the item
 function _arrayContains( arr, item, asStrict ) {
-    if (isContainerObject(b)) {
+    if (isContainerObject(item)) {
         for (var i=0; i<arr.length; i++) {
             if (isContainerObject(arr[i]) && _objectContains(arr[i], item, asStrict)) return true;
         }

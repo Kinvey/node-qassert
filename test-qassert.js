@@ -71,6 +71,12 @@ assert.throws(function(){ qassert.within(1, 2, .5) });
 
 // TODO:
 // contains() test for inclusion
+assert(qassert.contains([1, 2, 3], 2));
+assert(qassert.contains([1, {b:2}, 3], {b:2}));
+assert(qassert.contains({a:1, b:2, c:3}, 2));
+assert(qassert.contains({a:1, b:2, c:3}, {b:2}));
+// does not contain
+assert.throws(function(){ qassert.contains([1, {b:2}, 3], 2) });
 
 // check that other qassert methods invoke the same-named method on assert
 var savedAssert = {};
@@ -89,3 +95,4 @@ if (qassert.throws('fn', 'err') != "delegated fn err") throw new Error("throws w
 if (qassert.throws('fn', 'err', 'msg') != "delegated fn err") throw new Error("throws was not delegated");
 if (qassert.doesNotThrow('fn') != "delegated fn undefined") throw new Error("doesNotThrow was not delegated");
 
+console.log("ok");

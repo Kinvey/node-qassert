@@ -94,5 +94,7 @@ check that all the key-value properties of b are contained in a.
 Change Log
 ----------
 
+- 1.1.2 - fix `contains` refactor errors
+- 1.1.1 - edits to readme and package.json
 - 1.1.0 - `within`, `contains`
 - 1.0.0 - mostly just `assert`

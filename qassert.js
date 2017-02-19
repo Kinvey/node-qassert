@@ -8,7 +8,7 @@
 'use strict';
 
 var assert = require('assert');
-var __contains = require('./contains.js');
+var __contains = require('./contains');
 
 var qassert = {
     // delegated assert methods
@@ -125,7 +125,7 @@ function annotateError( err, message ) {
 }
 
 function contains( a, b, asStrict ) {
-    return __contains(a, b, asStrict);
+    return __contains.contains(a, b, asStrict);
 }
 
 function within( a, b, distance ) {
