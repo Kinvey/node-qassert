@@ -29,7 +29,6 @@ var qassert = {
     ifError: _ifError,
 
     // new test methods
-    fail: _fail,
     contains: _contains,
     strictContains: _strictContains,
     within: _within,
