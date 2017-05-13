@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015-2016 Andras Radics
+ * Copyright (C) 2015-2017 Andras Radics
  * Licensed under the Apache License, Version 2.0
  */
 
@@ -16,6 +16,10 @@ var called = false;
 assert.equal(qassert.ok, qassert.assert);
 assert(qassert.toString().indexOf("return qassert.assert") >= 0);
 assert(qassert.toString().indexOf("return qassert.assert") == qassert.toString().lastIndexOf("return qassert.assert"));
+
+// exports AssertionError
+// NOTE: how to construct a new instance?
+assert(qassert.AssertionError == assert.AssertionError)
 
 // assertions fail on falsy
 assert.throws(function(){ qassert(0) });
@@ -87,6 +91,8 @@ if (qassert.equal(1, 2) != "delegated 1 2") throw new Error("equal was not deleg
 if (qassert.notEqual(1, 2) != "delegated 1 2") throw new Error("notEqual was not delegated");
 if (qassert.deepEqual(1, 2) != "delegated 1 2") throw new Error("deepEqual was not delegated");
 if (qassert.notDeepEqual(1, 2) != "delegated 1 2") throw new Error("notDeepEqual was not delegated");
+if (qassert.deepStrictEqual(1, 2) != "delegated 1 2") throw new Error("deepEqual was not delegated");
+if (qassert.notDeepStrictEqual(1, 2) != "delegated 1 2") throw new Error("notDeepEqual was not delegated");
 if (qassert.strictEqual(1, 2) != "delegated 1 2") throw new Error("strictEqual was not delegated");
 if (qassert.notStrictEqual(1, 2) != "delegated 1 2") throw new Error("notStrictEqual was not delegated");
 if (qassert.throws('fn') != "delegated fn undefined") throw new Error("throws was not delegated");

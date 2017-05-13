@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015-2016 Andras Radics
+ * Copyright (C) 2015-2017 Andras Radics
  * Licensed under the Apache License, Version 2.0
  *
  * Qnit assertions.
@@ -11,12 +11,17 @@ var assert = require('assert');
 var __contains = require('./contains');
 
 var qassert = {
+    AssertionError: assert.AssertionError,
+
     // delegated assert methods
     ok: _assert,
+    fail: _fail,        // fail is our own, overrides assert.fail
     equal: _equal,
     notEqual: _notEqual,
     deepEqual: _deepEqual,
     notDeepEqual: _notDeepEqual,
+    deepStrictEqual: _deepStrictEqual,
+    notDeepStrictEqual: _notDeepStrictEqual,
     strictEqual: _strictEqual,
     notStrictEqual: _notStrictEqual,
     throws: _throws,
@@ -72,6 +77,10 @@ function _deepEqual(a,b,m) {
     return this._wrapAssertion(assert.deepEqual, _deepEqual, m, a, b, 'deepEqual') }
 function _notDeepEqual(a,b,m) {
     return this._wrapAssertion(assert.notDeepEqual, _notDeepEqual, m, a, b, 'notDeepEqual') }
+function _deepStrictEqual(a,b,m) {
+    return this._wrapAssertion(assert.deepStrictEqual || assert.deepEqual, _deepStrictEqual, m, a, b, 'deepStrictEqual') }
+function _notDeepStrictEqual(a,b,m) {
+    return this._wrapAssertion(assert.notDeepStrictEqual || assert.notDeepEqual, _notDeepStrictEqual, m, a, b, 'notDeepStrictEqual') }
 function _strictEqual(a,b,m) {
     return this._wrapAssertion(assert.strictEqual, _strictEqual, m, a, b, '===') }
 function _notStrictEqual(a,b,m) {
@@ -132,3 +141,7 @@ function within( a, b, distance ) {
     if (distance < 0) distance = -distance;
     return (a < b) ? (b - a <= distance) : (a - b <= distance);
 }
+
+// FIXME: spliced-in error sometimes overwrites last char of previous message ?
+
+// FIXME: error says "undefined contains 'fn2'" ie set being searched is not printed

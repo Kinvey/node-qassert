@@ -36,6 +36,20 @@ comparisons are coercive `==`, thus `[1]` and `[true]` are deepEqual.
 
 recursive inequality, objects and arrays differ.
 
+### qassert.deepStrictEqual( a, b, [message] )
+
+recursive strict equality, objects and arrays have srict equal elements.
+Comparison is non-coercive `===`, thus `0` and `false` differ.
+
+Under older versions of node that lack `assert.deepStrictEqual`, this
+call uses the coercive `assert.deepEqual` instead.
+
+### qassert.notDeepStrictEqual( a, b, [message] )
+
+recursive inequality, objects and arrays are not strict equal.
+Under older versions of node that lack `assert.notDeepStrictEqual`,
+this call uses the coercive `notDeepEqual`.
+
 ### qassert.strictEqual( a, b, [message] )
 
 strict equality test, `a === b`
@@ -52,6 +66,10 @@ object, a RegExp, or a validator function.
 ### qassert.doesNotThrow( block, [message] )
 
 check that the code block does not throw an error.
+
+### qassert.fail( )
+
+fail the test.  This overrides `assert.fail`
 
 ### qassert.ifError( err )
 
@@ -94,6 +112,7 @@ check that all the key-value properties of b are contained in a.
 Change Log
 ----------
 
+- 1.2.0 - deepStrictEqual and notDeepStrictEqual, document fail
 - 1.1.2 - fix `contains` refactor errors
 - 1.1.1 - edits to readme and package.json
 - 1.1.0 - `within`, `contains`
