@@ -1,6 +1,9 @@
 qassert
 =======
 
+[![Build Status](https://travis-ci.org/andrasq/node-qassert.svg?branch=master)](https://travis-ci.org/andrasq/node-qassert)
+[![Coverage Status](https://codecov.io/github/andrasq/node-qassert/coverage.svg?branch=master)](https://codecov.io/github/andrasq/node-qassert?branch=master)
+
 `qassert` wrappers the built-in `assert` package to make it nicer to use.
 It normalizes error messages and includes some new test methods.
 

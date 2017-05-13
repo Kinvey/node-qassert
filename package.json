@@ -10,6 +10,8 @@
     "devDependencies": {
     },
     "scripts": {
-        "test": "nodejs test-*"
+        "test": "nodejs test-*",
+        "coverage": "nyc --reporter lcov --reporter text npm run test",
+        "clean": "rm -rf .nyc_output coverage"
     }
 }

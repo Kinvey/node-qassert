@@ -47,7 +47,8 @@ module.exports = function( value ) {
     return qassert.assert(value);
 }
 for (var k in qassert) module.exports[k] = qassert[k];
-(function(){}).prototype = module.exports;
+// make exports into struct, to speed access
+_assert.prototype = module.exports;
 
 function _fail(m) { fail("test", "failed", "test does not pass" + (m ? ": " + m : ""), "", _fail); };
 
@@ -123,11 +124,8 @@ function fail( actual, expected, message, operator, stackStartFunction ) {
 function annotateError( err, message ) {
     if (message) {
         var p = err.stack.indexOf(err.message);
-        if (p >= 0) {
-            p += err.message.length;
-            err.stack =
-                err.stack.slice(0, p) + ": " + message + err.stack.slice(p);
-        }
+        p += err.message.length;
+        err.stack = err.stack.slice(0, p) + ": " + message + err.stack.slice(p);
         err.message += ": " + message;
     }
     return err;

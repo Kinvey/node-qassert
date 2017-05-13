@@ -75,12 +75,58 @@ assert.throws(function(){ qassert.within(1, 2, .5) });
 
 // TODO:
 // contains() test for inclusion
+assert(qassert.contains(1, 1));
+assert(qassert.contains(1, "1"));
+assert(qassert.contains(1, true));
+assert(qassert.contains("123", 2));
+assert(qassert.contains("foobar", "foo"));
+assert(qassert.contains("foobar", "oba"));
+assert(qassert.contains("foobar", "bar"));
+assert(qassert.contains(new Buffer("123"), 2));
+assert(qassert.contains(new Buffer("foobar"), "foo"));
+assert(qassert.contains(new Buffer("foobar"), "oba"));
+assert(qassert.contains(new Buffer("foobar"), "bar"));
+assert(qassert.contains(new Buffer("foobar"), new Buffer("foo")));
+assert(qassert.contains(new Buffer("foobar"), new Buffer("oba")));
+assert(qassert.contains(new Buffer("foobar"), new Buffer("bar")));
+assert(qassert.contains({a:1, b:2}, 2));
 assert(qassert.contains([1, 2, 3], 2));
 assert(qassert.contains([1, {b:2}, 3], {b:2}));
+assert(qassert.contains([1,2,3], [1,3]));
 assert(qassert.contains({a:1, b:2, c:3}, 2));
 assert(qassert.contains({a:1, b:2, c:3}, {b:2}));
+assert(qassert.contains([{a:1}, {a:1, b:2}, {b:2, c:3}], {b:2}));
+assert(qassert.contains([{a:1}, {a:1, b:2}, {b:2, c:3}], [{b:2}, {c:3}]));
 // does not contain
+assert.throws(function(){ qassert.contains(1, 2) });
+assert.throws(function(){ qassert.contains(1, 2) });
+assert.throws(function(){ qassert.contains(1, 2) });
 assert.throws(function(){ qassert.contains([1, {b:2}, 3], 2) });
+assert.throws(function(){ qassert.contains([1, {b:2}, 3], {b:3}) });
+assert.throws(function(){ qassert.contains([1,2,3], [1,4]) });
+assert.throws(function(){ assert(qassert.contains([{a:1, b:2}, {a:1}], 2)) });
+assert.throws(function(){ assert(qassert.contains([{a:1, b:2}, {a:1}], {c:2})) });
+assert.throws(function(){ assert(qassert.contains([{a:1}, {a:1, b:2}, {b:2, c:3}], [{a:2}, {c:3}])) });
+assert.throws(function(){ assert(qassert.contains({a:1, b:2, c:3}, 4)) });
+assert.throws(function(){ assert(qassert.contains({a:1, b:2, c:3}, {a:2})) });
+// strictContains()
+assert(qassert.strictContains(1, 1));
+assert(qassert.strictContains("foo", "foo"));
+assert(qassert.strictContains(true, true));
+// does not strictContains()
+assert.throws(function(){ qassert.strictContains(1, "1") });
+assert.throws(function(){ qassert.strictContains(1, true) });
+assert.throws(function(){ qassert.strictContains("true", true) });
+assert.throws(function(){ qassert.strictContains("123", 2) });
+assert.throws(function(){ qassert.strictContains(new Buffer("123"), 2) });
+
+// annotates error
+try {
+    qassert.equal(1, 2, "should not equal");
+    assert(false);
+} catch (err) {
+    assert(err.message.indexOf('1 == 2: should not equal') >= 0);
+}
 
 // check that other qassert methods invoke the same-named method on assert
 var savedAssert = {};

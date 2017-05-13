@@ -60,7 +60,8 @@ function _arrayContains( arr, item, asStrict ) {
         return false;
     }
     else {
-        if (asStrict) return arr.indexOf(item);
+        // ?? if (asStrict) return arr.indexOf(item);
+        // TODO: double-check semantics
         for (var i=0; i<arr.length; i++) if (deepEqual(arr[i], item, asStrict)) return true;
         return false;
     }
