@@ -93,9 +93,11 @@ same as `qassert.equal`.
 
 check that `a` is within `distance` units of `b`, ie that `abs(a - b) <= abs(distance)`.
 
-### qassert.inorder( a, [message] )
+### qassert.inorder( a, [compar,] [message] )
 
-check that the arguments in the array `a` are in non-descending order, compared with ` > `
+check that the arguments in the array `a` are in non-descending order, compared with ` > `.
+If `compar` is specified, elements will be compaired pairwise with `compar(a, b)`.
+`compar` should return a value `> 0` if `a > b`.
 
 ### qassert.contains( a, b )
 
