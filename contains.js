@@ -82,7 +82,7 @@ function _objectContains( obj, item, asStrict ) {
 }
 
 function deepEqual( a, b, asStrict ) {
-    var compar = asStrict && assert.strictDeepEquals ? assert.strictDeepEqual : assert.deepEqual;
+    var compar = asStrict && assert.deepStrictEqual ? assert.deepStrictEqual : assert.deepEqual;
     try { compar(a, b); return true }
     catch (err) { return false }
 }
