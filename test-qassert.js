@@ -40,6 +40,12 @@ assert.doesNotThrow(function(){ qassert(-Infinity) });
 
 // fail always throws
 assert.throws(function(){ qassert.fail() });
+// fail merges in user message
+try {
+    qassert.fail("deliberate failure");
+} catch (err) {
+    qassert.contains(err.message, "test does not pass: deliberate failure");
+}
 
 // ifError throws on falsy
 assert.doesNotThrow(function(){ qassert.ifError(0) });
@@ -72,6 +78,21 @@ assert.doesNotThrow(function(){ qassert.within(0.1, 0.9, 0.8) });
 assert.throws(function(){ qassert.within(-1, 1, 1.999) });
 assert.throws(function(){ qassert.within(-1, 0, 0.999) });
 assert.throws(function(){ qassert.within(1, 2, .5) });
+
+// inorder does not throw if true
+assert(qassert.inorder([1]));
+assert(qassert.inorder([1, 1]));
+assert(qassert.inorder([1, 2, 3]));
+assert(qassert.inorder([1, 2, 2, 3], function(a,b) { return a - b }));
+assert(qassert.inorder([2, 1, 1, 0], function(a,b) { return b - a }));
+assert(qassert.inorder(["a", "aa", "b"]));
+assert(qassert.inorder([{x:1}, {x:2}, {x:3}], function(a,b) { return a.x - a.x }));
+
+// inorder throws if not true
+assert.throws(function(){ qassert.inorder([2, 1]) });
+assert.throws(function(){ qassert.inorder([1, 2], function(a,b) { return b - a }) });
+assert.throws(function(){ qassert.inorder(["a", "b", "aa"]) });
+
 
 // TODO:
 // contains() test for inclusion
@@ -113,12 +134,16 @@ assert.throws(function(){ assert(qassert.contains({a:1, b:2, c:3}, {a:2})) });
 assert(qassert.strictContains(1, 1));
 assert(qassert.strictContains("foo", "foo"));
 assert(qassert.strictContains(true, true));
+assert(qassert.strictContains([1,2,3], 2));
+assert(qassert.strictContains({a:1, b:2, c:3}, 2));
+assert(qassert.strictContains({a:1, b:2, c:3}, {b:2, c:3}));
 // does not strictContains()
 assert.throws(function(){ qassert.strictContains(1, "1") });
 assert.throws(function(){ qassert.strictContains(1, true) });
 assert.throws(function(){ qassert.strictContains("true", true) });
 assert.throws(function(){ qassert.strictContains("123", 2) });
 assert.throws(function(){ qassert.strictContains(new Buffer("123"), 2) });
+assert.throws(function(){ qassert.strictContains([1,2,3], [2,4]) });
 
 // annotates error
 try {
@@ -146,5 +171,15 @@ if (qassert.throws('fn', {}) != "delegated fn [object Object]") throw new Error(
 if (qassert.throws('fn', 'err') != "delegated fn err") throw new Error("throws was not delegated");
 if (qassert.throws('fn', 'err', 'msg') != "delegated fn err") throw new Error("throws was not delegated");
 if (qassert.doesNotThrow('fn') != "delegated fn undefined") throw new Error("doesNotThrow was not delegated");
+
+// delegates deepEqual if deepStrictEqual is not available
+delete assert.deepStrictEqual;
+assert.equal(typeof qassert.deepStrictEqual(), 'function');
+qassert.deepStrictEqual([1,2], [1,2]);
+qassert.strictContains([1,2,3], 2);
+
+delete assert.notDeepStrictEqual;
+assert.equal(typeof qassert.notDeepStrictEqual(), 'function');
+qassert.notDeepStrictEqual([1,2], [1,3]);
 
 console.log("ok");

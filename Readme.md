@@ -93,6 +93,10 @@ same as `qassert.equal`.
 
 check that `a` is within `distance` units of `b`, ie that `abs(a - b) <= abs(distance)`.
 
+### qassert.inorder( a, [message] )
+
+check that the arguments in the array `a` are in non-descending order, compared with ` > `
+
 ### qassert.contains( a, b )
 
 check that `a` contains `b`.
@@ -115,6 +119,7 @@ check that all the key-value properties of b are contained in a.
 Change Log
 ----------
 
+- 1.3.0 - fix `strictContains` to be strict, new `inorder()`, 100% test coverage
 - 1.2.0 - deepStrictEqual and notDeepStrictEqual, document fail
 - 1.1.2 - fix `contains` refactor errors
 - 1.1.1 - edits to readme and package.json

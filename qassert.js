@@ -32,6 +32,7 @@ var qassert = {
     contains: _contains,
     strictContains: _strictContains,
     within: _within,
+    inorder: _inorder,
 
     // aliases
     equals: _equal,
@@ -108,6 +109,15 @@ function _within(a,b,dist,m) {
     if (within(a, b, dist)) return true;
     fail(a, b, m, 'within ' + dist + ' of', _within);
 }
+function _inorder(a, compar, m) {
+    if (m == undefined && typeof compar !== 'function') {
+        m = compar;
+        compar = null;
+    }
+    var ok = inorder(a, compar, m)
+    if (ok === true) return true;
+    fail(a[ok], a[ok+1], m, 'inorder', _inorder);
+}
 
 // wrapper assert.fail for more useful diagnostics
 function fail( actual, expected, message, operator, stackStartFunction ) {
@@ -137,6 +147,17 @@ function contains( a, b, asStrict ) {
 function within( a, b, distance ) {
     if (distance < 0) distance = -distance;
     return (a < b) ? (b - a <= distance) : (a - b <= distance);
+    // note: same as (a < b) ? inorder([b - distance, a])
+}
+
+// returns `true`, else a number (the offset of the out-of-order element pair)
+function inorder( args, compar ) {
+    if (!compar) compar = function(a, b) { return a > b ? 1 : 0 }
+
+    for (var i=0; i<args.length - 1; i++) {
+        if (compar(args[i], args[i+1]) > 0) return i;
+    }
+    return true;
 }
 
 // FIXME: spliced-in error sometimes overwrites last char of previous message ?
