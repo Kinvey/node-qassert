@@ -30,7 +30,9 @@ var qassert = {
 
     // new test methods
     contains: _contains,
+    notContains: _notContains,
     strictContains: _strictContains,
+    notStrictContains: _notStrictContains,
     within: _within,
     inorder: _inorder,
 
@@ -101,10 +103,16 @@ function _ifError(a,m) {
 // add-ons
 function _contains(a,b,m) {
     if (contains(a, b)) return true;
-    fail(a, b, m, 'contains', _contains); };
+    fail(a, b, m, 'contains', _contains); }
 function _strictContains(a,b,m) {
     if (contains(a, b, true)) return true;
-    fail(a, b, m, 'contains', _contains); };
+    fail(a, b, m, 'strictContains', _contains); }
+function _notContains(a,b,m) {
+    if (!contains(a, b)) return true;
+    fail(a, b, m, 'notContains', _notContains); }
+function _notStrictContains(a,b,m) {
+    if (!contains(a, b, true)) return true;
+    fail(a, b, m, 'notStrictContains', _notContains); }
 function _within(a,b,dist,m) {
     if (within(a, b, dist)) return true;
     fail(a, b, m, 'within ' + dist + ' of', _within);

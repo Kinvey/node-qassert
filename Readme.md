@@ -99,7 +99,7 @@ check that the arguments in the array `a` are in non-descending order, compared 
 If `compar` is specified, elements will be compaired pairwise with `compar(a, b)`.
 `compar` should return a value `> 0` if `a > b`.
 
-### qassert.contains( a, b )
+### qassert.contains( a, b, [message] )
 
 check that `a` contains `b`.
 
@@ -117,10 +117,19 @@ occurs in a, check that a contains the array of [`b`].)
 - `Object` - check that one of the fields of `a` is b.  If b is also an object,
 check that all the key-value properties of b are contained in a.
 
+### qassert.notContains( a, b, [message] )
+
+like `contains` but with the sense reversed, the test fails if a contains b
+
+### qassert.strictContains( a, b, [message] )
+
+### qassert.notStrictContains( a, b, [message] )
+
 
 Change Log
 ----------
 
+- 1.4.0 - notContains, notStrictContains
 - 1.3.0 - fix `strictContains` to be strict, new `inorder()`, 100% test coverage
 - 1.2.0 - deepStrictEqual and notDeepStrictEqual, document fail
 - 1.1.2 - fix `contains` refactor errors

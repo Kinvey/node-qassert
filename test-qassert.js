@@ -98,6 +98,7 @@ assert.throws(function(){ qassert.inorder(["a", "b", "aa"]) });
 // contains() test for inclusion
 assert(qassert.contains(1, 1));
 assert(qassert.contains(1, "1"));
+assert(qassert.contains([1], "1"));
 assert(qassert.contains(1, true));
 assert(qassert.contains("123", 2));
 assert(qassert.contains("foobar", "foo"));
@@ -144,6 +145,14 @@ assert.throws(function(){ qassert.strictContains("true", true) });
 assert.throws(function(){ qassert.strictContains("123", 2) });
 assert.throws(function(){ qassert.strictContains(new Buffer("123"), 2) });
 assert.throws(function(){ qassert.strictContains([1,2,3], [2,4]) });
+// notContains
+assert(qassert.notContains([1,2], 3));
+// does not notContains
+assert.throws(function(){ assert(qassert.notContains([1,2,3], 3)) });
+// notStrictCOntains
+assert(qassert.notStrictContains(["1",2], 1));
+// does not notStrictContains
+assert.throws(function(){ assert(qassert.notStrictContains(["1",2], "1")) });
 
 // annotates error
 try {
