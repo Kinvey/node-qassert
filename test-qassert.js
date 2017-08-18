@@ -150,9 +150,11 @@ assert(qassert.notContains([1,2], 3));
 // does not notContains
 assert.throws(function(){ assert(qassert.notContains([1,2,3], 3)) });
 // notStrictCOntains
+if (parseFloat(process.version.slice(1)) > 4) {
 assert(qassert.notStrictContains(["1",2], 1));
 // does not notStrictContains
 assert.throws(function(){ assert(qassert.notStrictContains(["1",2], "1")) });
+}
 
 // annotates error
 try {

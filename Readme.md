@@ -53,6 +53,9 @@ recursive inequality, objects and arrays are not strict equal.
 Under older versions of node that lack `assert.notDeepStrictEqual`,
 this call uses the coercive `notDeepEqual`.
 
+Under older versions of node that lack `assert.deepStrictEqual`, this
+call uses the coercive `assert.deepEqual` instead.
+
 ### qassert.strictEqual( a, b, [message] )
 
 strict equality test, `a === b`
@@ -123,12 +126,19 @@ like `contains` but with the sense reversed, the test fails if a contains b
 
 ### qassert.strictContains( a, b, [message] )
 
+Under older versions of node that lack `assert.deepStrictEqual`, this
+call does a coercive `qassert.deepEqual` instead.
+
 ### qassert.notStrictContains( a, b, [message] )
+
+Under older versions of node that lack `assert.deepStrictEqual`, this
+call does a coercive `qassert.deepEquls` instead.
 
 
 Change Log
 ----------
 
+- 1.4.1 - fix unit tests under node that lack strictDeepEquals
 - 1.4.0 - notContains, notStrictContains
 - 1.3.0 - fix `strictContains` to be strict, new `inorder()`, 100% test coverage
 - 1.2.0 - deepStrictEqual and notDeepStrictEqual, document fail
