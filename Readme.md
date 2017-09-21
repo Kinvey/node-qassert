@@ -1,17 +1,23 @@
 qassert
 =======
 
+Nodejs `assert` with useful new features and fewer rough edges.
+
 [![Build Status](https://travis-ci.org/andrasq/node-qassert.svg?branch=master)](https://travis-ci.org/andrasq/node-qassert)
 [![Coverage Status](https://codecov.io/github/andrasq/node-qassert/coverage.svg?branch=master)](https://codecov.io/github/andrasq/node-qassert?branch=master)
+
+
+Features
+--------
 
 `qassert` wrappers the built-in `assert` package to make it nicer to use.
 It normalizes error messages and includes some new test methods.
 
-- error diagnostics include both the inspected values and the user-supplied message if any
-
+- error diagnostics include both the inspected values and the user-supplied message
 - `fail()` method to error out and not continue
 - `within()` method to numeric range-test two values
-- `contains()` method to test inclusion in strings, arrays, objects
+- `inorder()` test that an array is sorted
+- `contains()` test inclusion in strings, arrays, objects
 
 
 `assert` methods
@@ -96,11 +102,11 @@ same as `qassert.equal`.
 
 check that `a` is within `distance` units of `b`, ie that `abs(a - b) <= abs(distance)`.
 
-### qassert.inorder( a, [compar,] [message] )
+### qassert.inorder( arr, [compar,] [message] )
 
-check that the arguments in the array `a` are in non-descending order, compared with ` > `.
+check that the arguments in the array `arr` are in non-descending order, compared with ` > `.
 If `compar` is specified, elements will be compaired pairwise with `compar(a, b)`.
-`compar` should return a value `> 0` if `a > b`.
+`compar(a, b)` should return a value `> 0` if `a > b`.
 
 ### qassert.contains( a, b, [message] )
 
