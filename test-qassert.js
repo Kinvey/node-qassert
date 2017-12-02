@@ -174,6 +174,15 @@ try {
     assert(err.message.indexOf('1 == 2: should not equal') >= 0);
 }
 
+// only methods increment the assertion count, functions do not
+var ac = qassert.assertionCount;
+qassert.ok.call(null, 1);
+qassert.equal.call(null, 1, 1);
+qassert.contains.call(null, [1, 2], 1);
+qassert.within.call(null, 1, 2, 1);
+qassert.inorder.call(null, [1, 2, 3]);
+assert.equal(qassert.assertionCount, ac);
+
 // check that other qassert methods invoke the same-named method on assert
 var savedAssert = {};
 for (var k in assert) savedAssert[k] = assert[k];

@@ -42,8 +42,6 @@ var qassert = {
     contain: _contains,
 
     assertionCount: 0,
-    _wrapAssertion: _wrapAssertion,
-    _wrapTest: _wrapTest,
 }
 
 // export an assertion function decorated with the other assertions,
@@ -67,8 +65,8 @@ function _assert(p, m) {
 
 // patch the assertion error to include the user message alongside the built-in inspected values
 // assert() shows the user message instead of the inspected values, which is less than helpful
-function _wrapAssertion( assertion, startStackFunction, message, actual, expected, operator ) {
-    if (this && this.assertionCount !== undefined) this.assertionCount += 1;
+function _wrapAssertion( self, assertion, startStackFunction, message, actual, expected, operator ) {
+    if (self && self.assertionCount !== undefined) self.assertionCount += 1;
     try {
         return assertion(actual, expected);
     }
@@ -76,49 +74,49 @@ function _wrapAssertion( assertion, startStackFunction, message, actual, expecte
         fail(actual, expected, message, operator, startStackFunction);
     }
 }
-function _wrapTest( assertion, startStackFunction, message, actual, expected, operator ) {
-    if (this && this.assertionCount !== undefined) this.assertionCount += 1;
-    if (! assertion(actual, expected)) fail(actual, expected, message, opeator, startStackFunction);
+function _wrapTest( self, assertion, startStackFunction, message, actual, expected, operator ) {
+    if (self && self.assertionCount !== undefined) self.assertionCount += 1;
+    if (! assertion(actual, expected)) fail(actual, expected, message, operator, startStackFunction);
     return true;
 }
 
 function _equal(a,b,m) {
-    return this._wrapAssertion(assert.equal, _equal, m, a, b, '==') }
+    return _wrapAssertion(this, assert.equal, _equal, m, a, b, '==') }
 function _notEqual(a,b,m) {
-    return this._wrapAssertion(assert.notEqual, _notEqual, m, a, b, '!=') }
+    return _wrapAssertion(this, assert.notEqual, _notEqual, m, a, b, '!=') }
 function _deepEqual(a,b,m) {
-    return this._wrapAssertion(assert.deepEqual, _deepEqual, m, a, b, 'deepEqual') }
+    return _wrapAssertion(this, assert.deepEqual, _deepEqual, m, a, b, 'deepEqual') }
 function _notDeepEqual(a,b,m) {
-    return this._wrapAssertion(assert.notDeepEqual, _notDeepEqual, m, a, b, 'notDeepEqual') }
+    return _wrapAssertion(this, assert.notDeepEqual, _notDeepEqual, m, a, b, 'notDeepEqual') }
 function _deepStrictEqual(a,b,m) {
-    return this._wrapAssertion(assert.deepStrictEqual || assert.deepEqual, _deepStrictEqual, m, a, b, 'deepStrictEqual') }
+    return _wrapAssertion(this, assert.deepStrictEqual || assert.deepEqual, _deepStrictEqual, m, a, b, 'deepStrictEqual') }
 function _notDeepStrictEqual(a,b,m) {
-    return this._wrapAssertion(assert.notDeepStrictEqual || assert.notDeepEqual, _notDeepStrictEqual, m, a, b, 'notDeepStrictEqual') }
+    return _wrapAssertion(this, assert.notDeepStrictEqual || assert.notDeepEqual, _notDeepStrictEqual, m, a, b, 'notDeepStrictEqual') }
 function _strictEqual(a,b,m) {
-    return this._wrapAssertion(assert.strictEqual, _strictEqual, m, a, b, '===') }
+    return _wrapAssertion(this, assert.strictEqual, _strictEqual, m, a, b, '===') }
 function _notStrictEqual(a,b,m) {
-    return this._wrapAssertion(assert.notStrictEqual, _notStrictEqual, m, a, b, '!==') }
+    return _wrapAssertion(this, assert.notStrictEqual, _notStrictEqual, m, a, b, '!==') }
 function _throws(a,b,m) {
 // TODO: is this arg steering necessary, or does assert() do it already?
 //    switch (arguments.length) {
 //    case 1: b = m = undefined; break;
 //    case 2: if (typeof b !== 'object') { m = b; b = undefined; }; break;
 //    }
-    return this._wrapAssertion(assert.throws, _throws, m, a, b, 'throws') }
+    return _wrapAssertion(this, assert.throws, _throws, m, a, b, 'throws') }
 function _doesNotThrow(a,m) {
-    return this._wrapAssertion(assert.doesNotThrow, _doesNotThrow, m, a, undefined, 'doesNotThrow') }
+    return _wrapAssertion(this, assert.doesNotThrow, _doesNotThrow, m, a, undefined, 'doesNotThrow') }
 function _ifError(a,m) {
-    return this._wrapAssertion(assert.ifError, _ifError, m, a, 'truthy', 'Error is') }
+    return _wrapAssertion(this, assert.ifError, _ifError, m, a, 'truthy', 'Error is') }
 
 // add-ons
 function _contains(a,b,m) {
-    return this._wrapTest(__contains.contains, _contains, m, a, b, 'contains') }
+    return _wrapTest(this, __contains.contains, _contains, m, a, b, 'contains') }
 function _strictContains(a,b,m) {
-    return this._wrapTest(__contains.strictContains, _strictContains, m, a, b, 'strictContains') }
+    return _wrapTest(this, __contains.strictContains, _strictContains, m, a, b, 'strictContains') }
 function _notContains(a,b,m) {
-    return this._wrapTest(__contains.notContains, _notContains, m, a, b, 'notContains') }
+    return _wrapTest(this, __contains.notContains, _notContains, m, a, b, 'notContains') }
 function _notStrictContains(a,b,m) {
-    return this._wrapTest(__contains.notStrictContains, _notStrictContains, m, a, b, 'notStrictContains') }
+    return _wrapTest(this, __contains.notStrictContains, _notStrictContains, m, a, b, 'notStrictContains') }
 function _within(a,b,dist,m) {
     if (this && this.assertionCount !== undefined) this.assertionCount += 1;
     if (within(a, b, dist)) return true;
@@ -156,10 +154,6 @@ function annotateError( err, message ) {
     return err;
 }
 
-function contains( a, b, asStrict ) {
-    return __contains.contains(a, b, asStrict);
-}
-
 function within( a, b, distance ) {
     if (distance < 0) distance = -distance;
     return (a < b) ? (b - a <= distance) : (a - b <= distance);
@@ -177,5 +171,3 @@ function inorder( args, compar ) {
 }
 
 // FIXME: spliced-in error sometimes overwrites last char of previous message ?
-
-// FIXME: error says "undefined contains 'fn2'" ie set being searched is not printed
