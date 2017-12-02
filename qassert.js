@@ -45,8 +45,12 @@ var qassert = {
     _wrapAssertion: _wrapAssertion,
 }
 
+// export an assertion function decorated with the other assertions,
+// and the assertionCount that is incremented whenever an assertion runs.
+// Copying the assertion methods onto a different object will increment
+// the assertionCount on the new host object.
 module.exports = function( value ) {
-    return qassert.assert(value);
+    return module.exports.assert(value);
 }
 for (var k in qassert) module.exports[k] = qassert[k];
 // make exports into struct, to speed access

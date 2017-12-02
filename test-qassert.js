@@ -14,8 +14,8 @@ require('./package.json');
 // qassert, qassert.ok and qassert.assert are all the same
 var called = false;
 assert.equal(qassert.ok, qassert.assert);
-assert(qassert.toString().indexOf("return qassert.assert") >= 0);
-assert(qassert.toString().indexOf("return qassert.assert") == qassert.toString().lastIndexOf("return qassert.assert"));
+assert(qassert.toString().indexOf("return module.exports.assert") >= 0);
+assert(qassert.toString().indexOf("return module.exports.assert") == qassert.toString().lastIndexOf("return module.exports.assert"));
 
 // exports AssertionError
 // NOTE: how to construct a new instance?
