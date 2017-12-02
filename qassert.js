@@ -43,6 +43,7 @@ var qassert = {
 
     assertionCount: 0,
     _wrapAssertion: _wrapAssertion,
+    _wrapTest: _wrapTest,
 }
 
 // export an assertion function decorated with the other assertions,
@@ -75,6 +76,11 @@ function _wrapAssertion( assertion, startStackFunction, message, actual, expecte
         fail(actual, expected, message, operator, startStackFunction);
     }
 }
+function _wrapTest( assertion, startStackFunction, message, actual, expected, operator ) {
+    if (this && this.assertionCount !== undefined) this.assertionCount += 1;
+    if (! assertion(actual, expected)) fail(actual, expected, message, opeator, startStackFunction);
+    return true;
+}
 
 function _equal(a,b,m) {
     return this._wrapAssertion(assert.equal, _equal, m, a, b, '==') }
@@ -106,17 +112,13 @@ function _ifError(a,m) {
 
 // add-ons
 function _contains(a,b,m) {
-    if (contains(a, b)) return true;
-    fail(a, b, m, 'contains', _contains); }
+    return this._wrapTest(__contains.contains, _contains, m, a, b, 'contains') }
 function _strictContains(a,b,m) {
-    if (contains(a, b, true)) return true;
-    fail(a, b, m, 'strictContains', _contains); }
+    return this._wrapTest(__contains.strictContains, _strictContains, m, a, b, 'strictContains') }
 function _notContains(a,b,m) {
-    if (!contains(a, b)) return true;
-    fail(a, b, m, 'notContains', _notContains); }
+    return this._wrapTest(__contains.notContains, _notContains, m, a, b, 'notContains') }
 function _notStrictContains(a,b,m) {
-    if (!contains(a, b, true)) return true;
-    fail(a, b, m, 'notStrictContains', _notContains); }
+    return this._wrapTest(__contains.notStrictContains, _notStrictContains, m, a, b, 'notStrictContains') }
 function _within(a,b,dist,m) {
     if (this && this.assertionCount !== undefined) this.assertionCount += 1;
     if (within(a, b, dist)) return true;

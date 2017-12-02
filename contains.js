@@ -9,6 +9,9 @@ var assert = require('assert');
 
 module.exports = {
     contains: contains,
+    strictContains: function(a,b) { return contains(a, b, true) },
+    notContains: function(a,b) { return ! contains(a, b) },
+    notStrictContains: function(a,b) { return ! contains(a, b, true) },
 }
 
 function contains( a, b, asStrict ) {

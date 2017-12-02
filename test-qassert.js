@@ -30,6 +30,7 @@ assert.throws(function(){ qassert(undefined) });
 assert.throws(function(){ qassert(NaN) });
 
 // assertions succeed on truthy
+var ac = qassert.assertionCount;
 assert.doesNotThrow(function(){ qassert(1) });
 assert.doesNotThrow(function(){ qassert(2.5) });
 assert.doesNotThrow(function(){ qassert("a") });
@@ -37,6 +38,7 @@ assert.doesNotThrow(function(){ qassert({}) });
 assert.doesNotThrow(function(){ qassert([]) });
 assert.doesNotThrow(function(){ qassert(Infinity) });
 assert.doesNotThrow(function(){ qassert(-Infinity) });
+assert.equal(qassert.assertionCount, ac + 7);
 
 // fail always throws
 assert.throws(function(){ qassert.fail() });
@@ -82,9 +84,11 @@ assert.throws(function(){ qassert.within(-1, 0, 0.999) });
 assert.throws(function(){ qassert.within(1, 2, .5) });
 
 // inorder does not throw if true
+var ac = qassert.assertionCount;
 assert(qassert.inorder([1]));
 assert(qassert.inorder([1, 1]));
 assert(qassert.inorder([1, 2, 3]));
+assert.equal(qassert.assertionCount, ac + 3);
 assert(qassert.inorder([1, 2, 2, 3], function(a,b) { return a - b }));
 assert(qassert.inorder([2, 1, 1, 0], function(a,b) { return b - a }));
 assert(qassert.inorder(["a", "aa", "b"]));
@@ -98,9 +102,11 @@ assert.throws(function(){ qassert.inorder(["a", "b", "aa"]) });
 
 // TODO:
 // contains() test for inclusion
+var ac = qassert.assertionCount;
 assert(qassert.contains(1, 1));
 assert(qassert.contains(1, "1"));
 assert(qassert.contains([1], "1"));
+assert.equal(qassert.assertionCount, ac + 3);
 assert(qassert.contains(1, true));
 assert(qassert.contains("123", 2));
 assert(qassert.contains("foobar", "foo"));
@@ -134,8 +140,10 @@ assert.throws(function(){ assert(qassert.contains([{a:1}, {a:1, b:2}, {b:2, c:3}
 assert.throws(function(){ assert(qassert.contains({a:1, b:2, c:3}, 4)) });
 assert.throws(function(){ assert(qassert.contains({a:1, b:2, c:3}, {a:2})) });
 // strictContains()
+var ac = qassert.assertionCount;
 assert(qassert.strictContains(1, 1));
 assert(qassert.strictContains("foo", "foo"));
+assert.equal(qassert.assertionCount, ac + 2);
 assert(qassert.strictContains(true, true));
 assert(qassert.strictContains([1,2,3], 2));
 assert(qassert.strictContains({a:1, b:2, c:3}, 2));
