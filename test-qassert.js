@@ -66,9 +66,11 @@ assert.throws(function(){ qassert.ifError(Infinity) });
 assert.throws(function(){ qassert.ifError(-Infinity) });
 
 // within does not throw if true
+var ac = qassert.assertionCount;
 assert.doesNotThrow(function(){ qassert.within(1, 2, 1) });
 assert.doesNotThrow(function(){ qassert.within(-1, -2, 1) });
 assert.doesNotThrow(function(){ qassert.within(-1, -2, -1) });
+assert.equal(qassert.assertionCount, ac + 3);
 assert.doesNotThrow(function(){ qassert.within(-1, 2, 3) });
 assert.doesNotThrow(function(){ qassert.within(-1, 0, 1) });
 assert.doesNotThrow(function(){ qassert.within(1, 2, 1e6) });

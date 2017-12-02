@@ -118,6 +118,7 @@ function _notStrictContains(a,b,m) {
     if (!contains(a, b, true)) return true;
     fail(a, b, m, 'notStrictContains', _notContains); }
 function _within(a,b,dist,m) {
+    if (this && this.assertionCount !== undefined) this.assertionCount += 1;
     if (within(a, b, dist)) return true;
     fail(a, b, m, 'within ' + dist + ' of', _within);
 }
@@ -126,6 +127,7 @@ function _inorder(a, compar, m) {
         m = compar;
         compar = null;
     }
+    if (this && this.assertionCount !== undefined) this.assertionCount += 1;
     var ok = inorder(a, compar, m)
     if (ok === true) return true;
     fail(a[ok], a[ok+1], m, 'inorder', _inorder);
