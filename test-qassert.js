@@ -168,6 +168,20 @@ assert(qassert.notStrictContains(["1",2], 1));
 assert.throws(function(){ assert(qassert.notStrictContains(["1",2], "1")) });
 }
 
+// throws, which must compar the provided sample if available
+// test does throw the expected error
+assert.doesNotThrow(function(){ qassert.doesNotThrow(function(){ /* does not throw */ }) });
+assert.doesNotThrow(function(){ qassert.throws(function(){ throw new TypeError('test error') }, TypeError) });
+assert.doesNotThrow(function(){ qassert.throws(function(){ throw new TypeError('test error') }, /test er/) });
+assert.doesNotThrow(function(){ qassert.throws(function(){ throw new TypeError('test error') }, function(e) { return e.message === 'test error' }) });
+try { qassert.throws(function(){ throw new TypeError('test error') }, SyntaxError, 'wrong error') }
+catch (e) { assert.ok(e.message.indexOf('wrong error') > 0) }
+// test does not throw or throws an unexpected error
+assert.throws(function(){ qassert.throws(function(){ /* does not throw */ }) });
+assert.throws(function(){ qassert.throws(function(){ throw new TypeError('test error') }, SyntaxError) });
+assert.throws(function(){ qassert.throws(function(){ throw new TypeError('test error') }, /failure/) });
+assert.throws(function(){ qassert.throws(function(){ throw new TypeError('test error') }, function(e) { return e.message === 'error' } ) });
+
 // annotates error
 try {
     qassert.equal(1, 2, "should not equal");
@@ -198,10 +212,7 @@ if (qassert.deepStrictEqual(1, 2) != "delegated 1 2") throw new Error("deepEqual
 if (qassert.notDeepStrictEqual(1, 2) != "delegated 1 2") throw new Error("notDeepEqual was not delegated");
 if (qassert.strictEqual(1, 2) != "delegated 1 2") throw new Error("strictEqual was not delegated");
 if (qassert.notStrictEqual(1, 2) != "delegated 1 2") throw new Error("notStrictEqual was not delegated");
-if (qassert.throws('fn') != "delegated fn undefined") throw new Error("throws was not delegated");
-if (qassert.throws('fn', {}) != "delegated fn [object Object]") throw new Error("throws was not delegated");
-if (qassert.throws('fn', 'err') != "delegated fn err") throw new Error("throws was not delegated");
-if (qassert.throws('fn', 'err', 'msg') != "delegated fn err") throw new Error("throws was not delegated");
+// throws does not delegate, it does its own arg checking
 if (qassert.doesNotThrow('fn') != "delegated fn undefined") throw new Error("doesNotThrow was not delegated");
 
 // delegates deepEqual if deepStrictEqual is not available

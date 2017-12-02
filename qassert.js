@@ -71,7 +71,7 @@ function _wrapAssertion( self, assertion, startStackFunction, message, actual, e
         return assertion(actual, expected);
     }
     catch (err) {
-        fail(actual, expected, message, operator, startStackFunction);
+        throw annotateError(err, message);
     }
 }
 function _wrapTest( self, assertion, startStackFunction, message, actual, expected, operator ) {
@@ -96,13 +96,16 @@ function _strictEqual(a,b,m) {
     return _wrapAssertion(this, assert.strictEqual, _strictEqual, m, a, b, '===') }
 function _notStrictEqual(a,b,m) {
     return _wrapAssertion(this, assert.notStrictEqual, _notStrictEqual, m, a, b, '!==') }
-function _throws(a,b,m) {
-// TODO: is this arg steering necessary, or does assert() do it already?
-//    switch (arguments.length) {
-//    case 1: b = m = undefined; break;
-//    case 2: if (typeof b !== 'object') { m = b; b = undefined; }; break;
-//    }
-    return _wrapAssertion(this, assert.throws, _throws, m, a, b, 'throws') }
+function _throws(a,e,m) {
+    // e can be compared to an Error, a RegExp, or a validator function
+    if (e instanceof Error || e instanceof RegExp || typeof e === 'function') {
+        try {assert.throws(a, e) }
+        catch (err) { throw annotateError(err, m) }
+    } else {
+        if (m === undefined) m = e;
+        try { assert.throws(a) }
+        catch (err) { throw annotateError(err, m) }
+    } }
 function _doesNotThrow(a,m) {
     return _wrapAssertion(this, assert.doesNotThrow, _doesNotThrow, m, a, undefined, 'doesNotThrow') }
 function _ifError(a,m) {
@@ -134,22 +137,26 @@ function _inorder(a, compar, m) {
 }
 
 // wrapper assert.fail for more useful diagnostics
+// Note that assert.fail throws a formatted error with these parameters,
+// but that actual assertions have already thrown the right error
+// and should not be re-failed.
 function fail( actual, expected, message, operator, stackStartFunction ) {
     try {
         assert.fail(actual, expected, null, operator, stackStartFunction);
     }
     catch (err) {
-        annotateError(err, message);
-        throw err;
+        throw annotateError(err, message);
     }
 }
 
-function annotateError( err, message ) {
-    if (message) {
+function annotateError( err, appendToMessage ) {
+    if (appendToMessage) {
         var p = err.stack.indexOf(err.message);
+        // just in case err.message is not contained in err.stack
+        p = Math.max(p, 0);
         p += err.message.length;
-        err.stack = err.stack.slice(0, p) + ": " + message + err.stack.slice(p);
-        err.message += ": " + message;
+        err.stack = err.stack.slice(0, p) + ": " + appendToMessage + err.stack.slice(p);
+        err.message += ": " + appendToMessage;
     }
     return err;
 }
@@ -163,5 +170,3 @@ function inorder( args, compar ) {
     }
     return true;
 }
-
-// FIXME: spliced-in error sometimes overwrites last char of previous message ?
