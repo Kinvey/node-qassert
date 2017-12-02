@@ -170,12 +170,16 @@ assert.throws(function(){ assert(qassert.notStrictContains(["1",2], "1")) });
 
 // throws, which must compar the provided sample if available
 // test does throw the expected error
+try { qassert.throws(function(){ /* no throw */ }, 'appended diagnostic') }
+catch (e) { assert.ok(e.message.indexOf('appended diagnostic') > 0) }
+try { qassert.throws(function(){ /* no throw */ }, 'invalid test-to', 'appended diagnostic') }
+catch (e) { assert.ok(e.message.indexOf('appended diagnostic') > 0) }
 assert.doesNotThrow(function(){ qassert.doesNotThrow(function(){ /* does not throw */ }) });
 assert.doesNotThrow(function(){ qassert.throws(function(){ throw new TypeError('test error') }, TypeError) });
 assert.doesNotThrow(function(){ qassert.throws(function(){ throw new TypeError('test error') }, /test er/) });
 assert.doesNotThrow(function(){ qassert.throws(function(){ throw new TypeError('test error') }, function(e) { return e.message === 'test error' }) });
-try { qassert.throws(function(){ throw new TypeError('test error') }, SyntaxError, 'wrong error') }
-catch (e) { assert.ok(e.message.indexOf('wrong error') > 0) }
+try { qassert.throws(function(){ throw new TypeError('test error') }, SyntaxError, 'appended diagnostic') }
+catch (e) { assert.ok(e.message.indexOf('appended diagnostic') > 0) }
 // test does not throw or throws an unexpected error
 assert.throws(function(){ qassert.throws(function(){ /* does not throw */ }) });
 assert.throws(function(){ qassert.throws(function(){ throw new TypeError('test error') }, SyntaxError) });
