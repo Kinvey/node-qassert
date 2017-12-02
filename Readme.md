@@ -144,6 +144,9 @@ call does a coercive `qassert.deepEquls` instead.
 Change Log
 ----------
 
+- 1.5.0 - fix `assertionCount` incrementing for all tests, only increment it if set,
+  change _wrap* to allow tests to be called as functions, fix tests to all have the
+  same parent object, simplify within() implementation
 - 1.4.1 - fix unit tests under node that lack strictDeepEquals
 - 1.4.0 - notContains, notStrictContains
 - 1.3.0 - fix `strictContains` to be strict, new `inorder()`, 100% test coverage
