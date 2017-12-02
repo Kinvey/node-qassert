@@ -146,7 +146,9 @@ Change Log
 
 - 1.5.0 - fix `assertionCount` incrementing for all tests, only increment it if set,
   change _wrap* to allow tests to be called as functions, fix tests to all have the
-  same parent object, simplify within() implementation
+  same parent object, simplify within() implementation, fix occasional clipping of
+  last char of error message, return the actual test failure error, fix error
+  annotation, 100% test coverage
 - 1.4.1 - fix unit tests under node that lack strictDeepEquals
 - 1.4.0 - notContains, notStrictContains
 - 1.3.0 - fix `strictContains` to be strict, new `inorder()`, 100% test coverage
