@@ -108,7 +108,7 @@ function _doesNotThrow(a,m) {
 function _ifError(a,m) {
     return _wrapAssertion(this, assert.ifError, _ifError, m, a, 'truthy', 'Error is') }
 
-// add-ons
+// extensions
 function _contains(a,b,m) {
     return _wrapTest(this, __contains.contains, _contains, m, a, b, 'contains') }
 function _strictContains(a,b,m) {
@@ -119,7 +119,7 @@ function _notStrictContains(a,b,m) {
     return _wrapTest(this, __contains.notStrictContains, _notStrictContains, m, a, b, 'notStrictContains') }
 function _within(a,b,dist,m) {
     if (this && this.assertionCount !== undefined) this.assertionCount += 1;
-    if (within(a, b, dist)) return true;
+    if (Math.abs(a - b) <= Math.abs(dist)) return true;
     fail(a, b, m, 'within ' + dist + ' of', _within);
 }
 function _inorder(a, compar, m) {
@@ -152,12 +152,6 @@ function annotateError( err, message ) {
         err.message += ": " + message;
     }
     return err;
-}
-
-function within( a, b, distance ) {
-    if (distance < 0) distance = -distance;
-    return (a < b) ? (b - a <= distance) : (a - b <= distance);
-    // note: same as (a < b) ? inorder([b - distance, a])
 }
 
 // returns `true`, else a number (the offset of the out-of-order element pair)

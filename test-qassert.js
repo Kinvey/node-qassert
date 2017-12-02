@@ -50,9 +50,11 @@ try {
 }
 
 // ifError throws on falsy
+var ac = qassert.assertionCount;
 assert.doesNotThrow(function(){ qassert.ifError(0) });
 assert.doesNotThrow(function(){ qassert.ifError("") });
 assert.doesNotThrow(function(){ qassert.ifError(false) });
+assert.equal(qassert.assertionCount, ac + 3);
 assert.doesNotThrow(function(){ qassert.ifError(null) });
 assert.doesNotThrow(function(){ qassert.ifError(undefined) });
 assert.doesNotThrow(function(){ qassert.ifError(NaN) });
