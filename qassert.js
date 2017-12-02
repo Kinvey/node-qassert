@@ -57,13 +57,13 @@ function _fail(m) { fail("test", "failed", "test does not pass" + (m ? ": " + m 
 
 function _assert(p, m) {
     // assertionCount must be a `this` property so we can re-attach the test methods to eg test runners
-    this.assertionCount += 1;
+    if (this && this.assertionCount !== undefined) this.assertionCount += 1;
     if (!p) fail(p, "truthy", m, "is", _assert); }
 
 // patch the assertion error to include the user message alongside the built-in inspected values
 // assert() shows the user message instead of the inspected values, which is less than helpful
 function _wrapAssertion( assertion, startStackFunction, message, actual, expected, operator ) {
-    this.assertionCount += 1;
+    if (this && this.assertionCount !== undefined) this.assertionCount += 1;
     try {
         return assertion(actual, expected);
     }
