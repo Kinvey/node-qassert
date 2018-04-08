@@ -114,6 +114,7 @@ assert(qassert.contains("123", 2));
 assert(qassert.contains("foobar", "foo"));
 assert(qassert.contains("foobar", "oba"));
 assert(qassert.contains("foobar", "bar"));
+assert(qassert.contains("foobar", /bar$/));
 assert(qassert.contains(new Buffer("123"), 2));
 assert(qassert.contains(new Buffer("foobar"), "foo"));
 assert(qassert.contains(new Buffer("foobar"), "oba"));
@@ -121,6 +122,7 @@ assert(qassert.contains(new Buffer("foobar"), "bar"));
 assert(qassert.contains(new Buffer("foobar"), new Buffer("foo")));
 assert(qassert.contains(new Buffer("foobar"), new Buffer("oba")));
 assert(qassert.contains(new Buffer("foobar"), new Buffer("bar")));
+assert(qassert.contains(new Buffer("foobar"), /bar$/));
 assert(qassert.contains({a:1, b:2}, 2));
 assert(qassert.contains([1, 2, 3], 2));
 assert(qassert.contains([1, {b:2}, 3], {b:2}));
@@ -129,6 +131,8 @@ assert(qassert.contains({a:1, b:2, c:3}, 2));
 assert(qassert.contains({a:1, b:2, c:3}, {b:2}));
 assert(qassert.contains([{a:1}, {a:1, b:2}, {b:2, c:3}], {b:2}));
 assert(qassert.contains([{a:1}, {a:1, b:2}, {b:2, c:3}], [{b:2}, {c:3}]));
+var rex = /foo/
+assert(qassert.contains([rex, /bar/], rex));
 // does not contain
 assert.throws(function(){ qassert.contains(1, 2) });
 assert.throws(function(){ qassert.contains(1, 2) });
@@ -141,6 +145,8 @@ assert.throws(function(){ assert(qassert.contains([{a:1, b:2}, {a:1}], {c:2})) }
 assert.throws(function(){ assert(qassert.contains([{a:1}, {a:1, b:2}, {b:2, c:3}], [{a:2}, {c:3}])) });
 assert.throws(function(){ assert(qassert.contains({a:1, b:2, c:3}, 4)) });
 assert.throws(function(){ assert(qassert.contains({a:1, b:2, c:3}, {a:2})) });
+assert.throws(function(){ qassert.contains("foo", "bar") });
+assert.throws(function(){ qassert.contains("foo", /bar/) });
 // strictContains()
 var ac = qassert.assertionCount;
 assert(qassert.strictContains(1, 1));

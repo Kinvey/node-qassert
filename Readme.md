@@ -119,7 +119,9 @@ is coercive, so eg `true` contains `1`.
 
 Specifically, when a is a
 - `string` - check that b occurs as a substring of a.  If b is not already a string, it it coerced.
+  If b is a RegExp, check that a matches b.
 - `Buffer` - check that b occurs as a sequence of bytes in a.  If b is not a buffer, it is coerced.
+  If b is a RegExp, check that a as a string matches b.
 - `Array` - check that one of the elements of `a` is b, or if b is an object, contains b.
 If b itself is an array, then check that all elements of `b` are contained in `a` (To test that the array b
 occurs in a, check that a contains the array of [`b`].)
@@ -144,6 +146,8 @@ call does a coercive `qassert.deepEquls` instead.
 Change Log
 ----------
 
+- 1.6.0 - support `contains()` test of string/Buffer and RegExp,
+  fix `contains(array, non-hash-obj)` test to look for the object itself
 - 1.5.0 - fix `assertionCount` incrementing for all tests, only increment it if set,
   change _wrap* to allow tests to be called as functions, fix tests to all have the
   same parent object, simplify within() implementation, fix occasional clipping of

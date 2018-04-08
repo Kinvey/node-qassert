@@ -16,12 +16,16 @@ module.exports = {
 
 function contains( a, b, asStrict ) {
     if (typeof a === 'string') {
+        // string a matches pattern b
+        if (b instanceof RegExp) return b.test(a);
         // string a contains substring b
         if (asStrict && typeof b !== 'string') return false;
         return a.indexOf('' + b) >= 0;
     }
 
     if (Buffer.isBuffer(a)) {
+        // contents of Buffer a converted to string match pattern b
+        if (b instanceof RegExp) return b.test('' + a);
         // Buffer contains substring or sub-buffer
         if (asStrict && typeof b !== 'string' && !Buffer.isBuffer(b)) return false;
         if (!Buffer.isBuffer(b)) b = new Buffer('' + b);
@@ -34,7 +38,7 @@ function contains( a, b, asStrict ) {
             for (var i=0; i<b.length; i++) if (!_arrayContains(a, b[i], asStrict)) return false;
             return true;
         }
-        else if (typeof b === 'object') {
+        else if (typeof b === 'object' && isHash(b)) {
             // one of the array element must contain b
             for (var i=0; i<a.length; i++) if (_objectContains(a[i], b, asStrict)) return true;
             return false;
@@ -90,7 +94,12 @@ function deepEqual( a, b, asStrict ) {
     catch (err) { return false }
 }
 
+// TODO: is a user-defined type eg Coordinate a container or a data item?
+// TODO: isContainer really means isHash, and should be implemented as such
 var dataObjectTypes = ['Array', 'Buffer', 'Date', 'RegExp'];
 function isContainerObject( a ) {
     return (a && typeof a === 'object' && dataObjectTypes.indexOf(a.constructor.name) < 0);
+}
+function isHash( item ) {
+    return item && typeof item === 'object' && item.constructor === Object;
 }
