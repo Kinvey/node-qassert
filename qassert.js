@@ -71,6 +71,9 @@ function _wrapAssertion( self, assertion, startStackFunction, message, actual, e
         return assertion(actual, expected);
     }
     catch (err) {
+        //fail(actual, expected, null, operator, startStackFunction);
+        // modify the stack trace to omit qassert internal sources
+        Error.captureStackTrace(err, startStackFunction);
         throw annotateError(err, message);
     }
 }
