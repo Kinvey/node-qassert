@@ -100,6 +100,8 @@ function _strictEqual(a,b,m) {
 function _notStrictEqual(a,b,m) {
     return _wrapAssertion(this, assert.notStrictEqual, _notStrictEqual, m, a, b, '!==') }
 function _throws(a,e,m) {
+    // TODO: write _testThrows, then _wrapAssertion(this, _testThrows, ...);
+    if (this && this.assertionCount !== undefined) this.assertionCount += 1;
     // e can be compared to an Error, a RegExp, or a validator function
     if (e instanceof Error || e instanceof RegExp || typeof e === 'function') {
         try {assert.throws(a, e) }

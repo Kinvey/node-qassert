@@ -182,6 +182,8 @@ try { qassert.throws(function(){ /* no throw */ }, 'invalid test-to', 'appended 
 catch (e) { assert.ok(e.message.indexOf('appended diagnostic') > 0) }
 assert.doesNotThrow(function(){ qassert.doesNotThrow(function(){ /* does not throw */ }) });
 assert.doesNotThrow(function(){ qassert.throws(function(){ throw new TypeError('test error') }, TypeError) });
+// works when called as a function
+assert.doesNotThrow(function(){ var testfn = qassert.throws; testfn(function(){ throw new TypeError('test error') }, TypeError) });
 assert.doesNotThrow(function(){ qassert.throws(function(){ throw new TypeError('test error') }, /test er/) });
 assert.doesNotThrow(function(){ qassert.throws(function(){ throw new TypeError('test error') }, function(e) { return e.message === 'test error' }) });
 try { qassert.throws(function(){ throw new TypeError('test error') }, SyntaxError, 'appended diagnostic') }
