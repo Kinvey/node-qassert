@@ -156,10 +156,10 @@ function fail( actual, expected, message, operator, stackStartFunction ) {
 
 function annotateError( err, appendToMessage ) {
     if (appendToMessage) {
-        var p = err.stack.indexOf(err.message);
+        var msg = err.message || "";
+        var p = err.stack.indexOf(msg);
         // just in case err.message is not contained in err.stack
-        p = Math.max(p, 0);
-        p += err.message.length;
+        p = Math.max(p, 0) + msg.length;
         err.stack = err.stack.slice(0, p) + ": " + appendToMessage + err.stack.slice(p);
         err.message += ": " + appendToMessage;
     }
