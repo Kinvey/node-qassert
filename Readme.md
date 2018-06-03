@@ -146,6 +146,7 @@ call does a coercive `qassert.deepEquls` instead.
 Change Log
 ----------
 
+- 1.6.1 - fix throws() to increment `assertionCount`, omit own sources from error stack trace
 - 1.6.0 - support `contains()` test of string/Buffer and RegExp,
   fix `contains(array, non-hash-obj)` test to look for the object itself
 - 1.5.0 - fix `assertionCount` incrementing for all tests, only increment it if set,
