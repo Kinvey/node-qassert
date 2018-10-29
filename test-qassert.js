@@ -8,6 +8,8 @@
 var assert = require('assert');
 var qassert = require('./');
 
+var nodeMajorVersion = parseInt(process.version.slice(1));
+
 // can parse package.json
 require('./package.json');
 
@@ -51,13 +53,22 @@ try {
 
 // ifError throws on falsy
 var ac = qassert.assertionCount;
+assert.doesNotThrow(function(){ qassert.ifError(undefined) });
+assert.doesNotThrow(function(){ qassert.ifError(null) });
+if (nodeMajorVersion < 10) {
 assert.doesNotThrow(function(){ qassert.ifError(0) });
 assert.doesNotThrow(function(){ qassert.ifError("") });
 assert.doesNotThrow(function(){ qassert.ifError(false) });
-assert.equal(qassert.assertionCount, ac + 3);
-assert.doesNotThrow(function(){ qassert.ifError(null) });
-assert.doesNotThrow(function(){ qassert.ifError(undefined) });
 assert.doesNotThrow(function(){ qassert.ifError(NaN) });
+assert.equal(qassert.assertionCount, ac + 6);
+} else {
+// node-v10 and up throw on falsy non-null errors, too
+assert.throws(function(){ qassert.ifError(0) });
+assert.throws(function(){ qassert.ifError("") });
+assert.throws(function(){ qassert.ifError(false) });
+assert.throws(function(){ qassert.ifError(NaN) });
+assert.equal(qassert.assertionCount, ac + 6);
+}
 
 // ifError throws on truthy
 assert.throws(function(){ qassert.ifError(new Error("deliberate error")) });
