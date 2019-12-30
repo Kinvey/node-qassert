@@ -28,6 +28,7 @@ function contains( a, b, asStrict ) {
         if (b instanceof RegExp) return b.test('' + a);
         // Buffer contains substring or sub-buffer
         if (asStrict && typeof b !== 'string' && !Buffer.isBuffer(b)) return false;
+// FIXME: multi-byte utf8 characters could produce false positives
         if (!Buffer.isBuffer(b)) b = new Buffer('' + b);
         return a.toString('hex').indexOf(b.toString('hex')) >= 0;
     }
@@ -78,7 +79,8 @@ function _arrayContains( arr, item, asStrict ) {
 function _objectContains( obj, item, asStrict ) {
     if (isContainerObject(item)) {
         // all fields from item must be present
-        for (var k in item) if (!deepEqual(item[k], obj[k], asStrict)) return false;
+        if (!(typeof obj === 'object')) return false;
+        for (var k in item) if (!(k in obj) || !deepEqual(item[k], obj[k], asStrict)) return false;
         return true;
     }
     else {

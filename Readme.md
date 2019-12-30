@@ -4,7 +4,7 @@ qassert
 Nodejs `assert` with useful new features and fewer rough edges.
 
 [![Build Status](https://travis-ci.org/andrasq/node-qassert.svg?branch=master)](https://travis-ci.org/andrasq/node-qassert)
-[![Coverage Status](https://codecov.io/github/andrasq/node-qassert/coverage.svg?branch=master)](https://codecov.io/github/andrasq/node-qassert?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/andrasq/node-qassert/badge.svg?branch=master)](https://coveralls.io/github/andrasq/node-qassert?branch=master)
 
 
 Features
@@ -146,6 +146,7 @@ call does a coercive `qassert.deepEquls` instead.
 Change Log
 ----------
 
+- 1.6.2 - fix contains([1,2,3], {y:null})
 - 1.6.1 - fix throws() to increment `assertionCount`, omit own sources from error stack trace,
   guard against assertion errors without a message
 - 1.6.0 - support `contains()` test of string/Buffer and RegExp,

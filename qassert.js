@@ -156,7 +156,8 @@ function fail( actual, expected, message, operator, stackStartFunction ) {
 
 function annotateError( err, appendToMessage ) {
     if (appendToMessage) {
-        var msg = err.message || "";
+        // all errors we annotate have a non-empty message
+        var msg = err.message;
         var p = err.stack.indexOf(msg);
         // just in case err.message is not contained in err.stack
         p = Math.max(p, 0) + msg.length;

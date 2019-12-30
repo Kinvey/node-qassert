@@ -176,6 +176,7 @@ assert.throws(function(){ qassert.strictContains(new Buffer("123"), 2) });
 assert.throws(function(){ qassert.strictContains([1,2,3], [2,4]) });
 // notContains
 assert(qassert.notContains([1,2], 3));
+assert(qassert.notContains([1,2], {y:null}));
 // does not notContains
 assert.throws(function(){ assert(qassert.notContains([1,2,3], 3)) });
 // notStrictCOntains
