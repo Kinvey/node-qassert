@@ -10,6 +10,9 @@ var qassert = require('./');
 
 var nodeMajorVersion = parseInt(process.version.slice(1));
 
+// extracted from qibl:
+var newBuf = eval('nodeMajorVersion < 10 ? Buffer : function(a, b, c) { return typeof(a) === "number" ? Buffer.allocUnsafe(a) : Buffer.from(a, b, c) }');
+
 // can parse package.json
 require('./package.json');
 
@@ -113,7 +116,6 @@ assert.throws(function(){ qassert.inorder([1, 2], function(a,b) { return b - a }
 assert.throws(function(){ qassert.inorder(["a", "b", "aa"]) });
 
 
-// TODO:
 // contains() test for inclusion
 var ac = qassert.assertionCount;
 assert(qassert.contains(1, 1));
@@ -126,14 +128,14 @@ assert(qassert.contains("foobar", "foo"));
 assert(qassert.contains("foobar", "oba"));
 assert(qassert.contains("foobar", "bar"));
 assert(qassert.contains("foobar", /bar$/));
-assert(qassert.contains(new Buffer("123"), 2));
-assert(qassert.contains(new Buffer("foobar"), "foo"));
-assert(qassert.contains(new Buffer("foobar"), "oba"));
-assert(qassert.contains(new Buffer("foobar"), "bar"));
-assert(qassert.contains(new Buffer("foobar"), new Buffer("foo")));
-assert(qassert.contains(new Buffer("foobar"), new Buffer("oba")));
-assert(qassert.contains(new Buffer("foobar"), new Buffer("bar")));
-assert(qassert.contains(new Buffer("foobar"), /bar$/));
+assert(qassert.contains(newBuf("123"), 2));
+assert(qassert.contains(newBuf("foobar"), "foo"));
+assert(qassert.contains(newBuf("foobar"), "oba"));
+assert(qassert.contains(newBuf("foobar"), "bar"));
+assert(qassert.contains(newBuf("foobar"), newBuf("foo")));
+assert(qassert.contains(newBuf("foobar"), newBuf("oba")));
+assert(qassert.contains(newBuf("foobar"), newBuf("bar")));
+assert(qassert.contains(newBuf("foobar"), /bar$/));
 assert(qassert.contains({a:1, b:2}, 2));
 assert(qassert.contains([1, 2, 3], 2));
 assert(qassert.contains([1, {b:2}, 3], {b:2}));
@@ -172,7 +174,7 @@ assert.throws(function(){ qassert.strictContains(1, "1") });
 assert.throws(function(){ qassert.strictContains(1, true) });
 assert.throws(function(){ qassert.strictContains("true", true) });
 assert.throws(function(){ qassert.strictContains("123", 2) });
-assert.throws(function(){ qassert.strictContains(new Buffer("123"), 2) });
+assert.throws(function(){ qassert.strictContains(newBuf("123"), 2) });
 assert.throws(function(){ qassert.strictContains([1,2,3], [2,4]) });
 // notContains
 assert(qassert.notContains([1,2], 3));

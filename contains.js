@@ -7,6 +7,13 @@
 
 var assert = require('assert');
 
+var nodeMajor = parseInt(process.version.slice(1));
+
+// extracted from qibl:
+var newBuf = eval('nodeMajor < 10 ? Buffer : function(a, b, c) { return typeof(a) === "number" ? Buffer.allocUnsafe(a) : Buffer.from(a, b, c) }');
+var allocBuf = eval('nodeMajor >= 6 ? Buffer.allocUnsafe : Buffer');
+var fromBuf = eval('nodeMajor >= 6 ? Buffer.from : Buffer');
+
 module.exports = {
     contains: contains,
     strictContains: function(a,b) { return contains(a, b, true) },
@@ -29,7 +36,7 @@ function contains( a, b, asStrict ) {
         // Buffer contains substring or sub-buffer
         if (asStrict && typeof b !== 'string' && !Buffer.isBuffer(b)) return false;
 // FIXME: multi-byte utf8 characters could produce false positives
-        if (!Buffer.isBuffer(b)) b = new Buffer('' + b);
+        if (!Buffer.isBuffer(b)) b = fromBuf('' + b);
         return a.toString('hex').indexOf(b.toString('hex')) >= 0;
     }
 
