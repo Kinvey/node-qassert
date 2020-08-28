@@ -146,12 +146,17 @@ function _inorder(a, compar, m) {
 // but that actual assertions have already thrown the right error
 // and should not be re-failed.
 function fail( actual, expected, message, operator, stackStartFunction ) {
-    try {
-        assert.fail(actual, expected, null, operator, stackStartFunction);
-    }
-    catch (err) {
-        throw annotateError(err, message);
-    }
+    // node-v10 and up deprecate the multi-argument form of assert.fail, use AssertionError
+    var err = new assert.AssertionError({
+        message: message !== undefined ? String(message) : 'fail',
+        generatedMessage: message === undefined,
+        actual: actual,
+        expected: expected,
+        operator: operator,
+        startStackFn: stackStartFunction
+    })
+    err.generatedMessage = (message === undefined);
+    throw err;
 }
 
 function annotateError( err, appendToMessage ) {
@@ -159,8 +164,7 @@ function annotateError( err, appendToMessage ) {
         // all errors we annotate have a non-empty message
         var msg = err.message;
         var p = err.stack.indexOf(msg);
-        // just in case err.message is not contained in err.stack
-        p = Math.max(p, 0) + msg.length;
+        p = (p >= 0 ? p + msg.length : 0);
         err.stack = err.stack.slice(0, p) + ": " + appendToMessage + err.stack.slice(p);
         err.message += ": " + appendToMessage;
     }
