@@ -153,7 +153,7 @@ function fail( actual, expected, message, operator, stackStartFunction ) {
         actual: actual,
         expected: expected,
         operator: operator,
-        startStackFn: stackStartFunction
+        stackStartFn: stackStartFunction
     })
     err.generatedMessage = (message === undefined);
     throw err;
