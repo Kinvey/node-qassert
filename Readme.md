@@ -146,6 +146,7 @@ call does a coercive `qassert.deepEquls` instead.
 Change Log
 ----------
 
+- 1.6.3 - fix assert.fail deprecation notice, fix possible message annotation mis-positioning
 - 1.6.2 - fix contains([1,2,3], {y:null}), work around Buffer deprecation warnings
 - 1.6.1 - fix throws() to increment `assertionCount`, omit own sources from error stack trace,
   guard against assertion errors without a message
