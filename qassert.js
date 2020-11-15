@@ -152,7 +152,8 @@ function _inorder(a, compar, m) {
 function fail( actual, expected, message, operator, stackStartFunction ) {
     // node-v10 and up deprecate the multi-argument form of assert.fail, use AssertionError
     var err = new assert.AssertionError({
-        message: message !== undefined ? String(message) : 'fail',
+        // ensure a canonical "actual op expected: msg" error message
+        message: actual + ' ' + operator + ' ' + expected + ': ' + (message || 'fail'),
         generatedMessage: message === undefined,
         actual: actual,
         expected: expected,
