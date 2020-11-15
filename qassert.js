@@ -107,13 +107,17 @@ function _throws(a,e,m) {
     // TODO: write _testThrows, then _wrapAssertion(this, _testThrows, ...);
     if (this && this.assertionCount !== undefined) this.assertionCount += 1;
     // e can be compared to an Error, a RegExp, or a validator function
-    if (e instanceof Error || e instanceof RegExp || typeof e === 'function') {
-        try {assert.throws(a, e) }
-        catch (err) { throw annotateError(err, m) }
-    } else {
-        if (m === undefined) m = e;
-        try { assert.throws(a) }
-        catch (err) { throw annotateError(err, m) }
+    try {
+        if (e instanceof Error || e instanceof RegExp || typeof e === 'function') {
+            assert.throws(a, e);
+        } else {
+            if (m === undefined) m = e; // two-argument form
+            assert.throws(a);
+        }
+    } catch (err) {
+        // node-v0.6 assigns the 'Missing expected exception' message to err.actual, not err.message
+        err.message = err.message || err.actual; // fix node-v0.6 err.message
+        throw annotateError(err, m);
     } }
 function _doesNotThrow(a,m) {
     return _wrapAssertion(this, assert.doesNotThrow, _doesNotThrow, m, a, undefined, 'doesNotThrow') }
