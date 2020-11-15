@@ -168,14 +168,17 @@ function fail( actual, expected, message, operator, stackStartFunction ) {
     throw err;
 }
 
+// append to, instead of replacing the built-in diagnostic
 function annotateError( err, appendToMessage ) {
     if (appendToMessage) {
         // all errors we annotate have a non-empty message
-        var msg = err.message;
+        // some node-v0.8 errors do not populate err.message?? if so, supply the canonical
+        var msg = err.message || (err.actual + ' ' + err.operator + ' ' + err.expected);
         var p = err.stack.indexOf(msg);
         p = (p >= 0 ? p + msg.length : 0);
         err.stack = err.stack.slice(0, p) + ": " + appendToMessage + err.stack.slice(p);
         err.message += ": " + appendToMessage;
+        err.code = err.code || 'ERR_ASSERTION';
     }
     return err;
 }
