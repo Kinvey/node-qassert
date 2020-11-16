@@ -194,14 +194,25 @@ try { qassert.throws(function(){ /* no throw */ }, 'appended diagnostic') }
 catch (e) { assert.ok(e.message.indexOf('appended diagnostic') > 0) }
 try { qassert.throws(function(){ /* no throw */ }, 'invalid test-to', 'appended diagnostic') }
 catch (e) { assert.ok(e.message.indexOf('appended diagnostic') > 0) }
+
+qassert.throws(function() { throw new Error() });
+qassert.throws(function() { throw 'string' });
+qassert.throws(function() { throw false });
+qassert.throws(function() { throw 0 });
+qassert.throws(function() { throw 'non-object' });
+
+try { qassert.throws(function(){ throw 'string A' }, 'expect string B') }
+    catch (e) { assert.ok(e === 'string A') }
+
 assert.doesNotThrow(function(){ qassert.doesNotThrow(function(){ /* does not throw */ }) });
 assert.doesNotThrow(function(){ qassert.throws(function(){ throw new TypeError('test error') }, TypeError) });
 // works when called as a function
 assert.doesNotThrow(function(){ var testfn = qassert.throws; testfn(function(){ throw new TypeError('test error') }, TypeError) });
 assert.doesNotThrow(function(){ qassert.throws(function(){ throw new TypeError('test error') }, /test er/) });
 assert.doesNotThrow(function(){ qassert.throws(function(){ throw new TypeError('test error') }, function(e) { return e.message === 'test error' }) });
-try { qassert.throws(function(){ throw new TypeError('test error') }, SyntaxError, 'appended diagnostic') }
-catch (e) { assert.ok(e.message.indexOf('appended diagnostic') > 0) }
+// NOTE: should not annotate non-AssertionError-s, since throws() re-throws the user error if it did not match the expected
+// try { qassert.throws(function(){ throw new TypeError('test error') }, SyntaxError, 'appended diagnostic') }
+// catch (e) { assert.ok(e.message.indexOf('appended diagnostic') > 0) }
 // test does not throw or throws an unexpected error
 assert.throws(function(){ qassert.throws(function(){ /* does not throw */ }) });
 assert.throws(function(){ qassert.throws(function(){ throw new TypeError('test error') }, SyntaxError) });

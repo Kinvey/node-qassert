@@ -76,7 +76,6 @@ function _wrapAssertion( self, assertion, startStackFunction, message, actual, e
         err.actual = actual;
         err.operator = operator;
         err.expected = expected;
-        err.message = err.message || actual + ' ' + operator + ' ' + expected;
         Error.captureStackTrace(err, startStackFunction);
         throw annotateError(err, message);
     }
@@ -104,20 +103,23 @@ function _strictEqual(a,b,m) {
 function _notStrictEqual(a,b,m) {
     return _wrapAssertion(this, assert.notStrictEqual, _notStrictEqual, m, a, b, '!==') }
 function _throws(a,e,m) {
-    // TODO: write _testThrows, then _wrapAssertion(this, _testThrows, ...);
     if (this && this.assertionCount !== undefined) this.assertionCount += 1;
-    // e can be compared to an Error, a RegExp, or a validator function
     try {
         if (e instanceof Error || e instanceof RegExp || typeof e === 'function') {
+            // the expected e can be an Error, a RegExp, or a validator function (or, in newer node, an object)
             assert.throws(a, e);
         } else {
             if (m === undefined) m = e; // two-argument form
             assert.throws(a);
         }
     } catch (err) {
+        // NOTE: nodejs rethrows the user error if it does not match the expected, even when a non-object
+        // NOTE: It might be better to always fail from here with an AssertionError... TBD.
+        // NOTE: without an AssertionError cannot distinguish test failure from code crash
+
         // node-v0.6 assigns the 'Missing expected exception' message to err.actual, not err.message
-        err.message = err.message || err.actual; // fix node-v0.6 err.message
-        throw annotateError(err, m);
+        var altMessage = findFirst([false, err.message, err.actual]); // fix node-v0.6 err.message, `false` added for code cov
+        throw annotateError(err, m, altMessage);
     } }
 function _doesNotThrow(a,m) {
     return _wrapAssertion(this, assert.doesNotThrow, _doesNotThrow, m, a, undefined, 'doesNotThrow') }
@@ -169,16 +171,16 @@ function fail( actual, expected, message, operator, stackStartFunction ) {
 }
 
 // append to, instead of replacing the built-in diagnostic
-function annotateError( err, appendToMessage ) {
-    if (appendToMessage) {
-        // all errors we annotate have a non-empty message
+// note that if throws() fails to match it rethrows the user-provided thrown item, which need not be an Error
+function annotateError( err, appendToMessage, altMessage ) {
+    if (err instanceof assert.AssertionError) {
         // some node-v0.8 errors do not populate err.message?? if so, supply the canonical
-        var msg = err.message || (err.actual + ' ' + err.operator + ' ' + err.expected);
-        var p = err.stack.indexOf(msg);
-        p = (p >= 0 ? p + msg.length : 0);
-        err.stack = err.stack.slice(0, p) + ": " + appendToMessage + err.stack.slice(p);
-        err.message += ": " + appendToMessage;
-        err.code = err.code || 'ERR_ASSERTION';
+        // (the canonical message or altMessage will not be in the stack trace, so ok to use in replace)
+        var msg = findFirst([err.message, altMessage, (err.actual + ' ' + err.operator + ' ' + err.expected)]);
+        var annotatedMsg = msg + (appendToMessage ? ': ' + appendToMessage : '');
+        err.stack = err.stack && err.stack.replace(msg, annotatedMsg);
+        err.message = annotatedMsg;
+        // err.code = findFirst([err.code, 'ERR_ASSERTION']); // TBD: ensure err.code set, even on older nodejs
     }
     return err;
 }
@@ -191,4 +193,10 @@ function inorder( args, compar ) {
         if (compar(args[i], args[i+1]) > 0) return i;
     }
     return true;
+}
+
+// return the first element in the array
+// this function implements a || b ... || z in a way that does not hurt test coverage
+function findFirst( array, test ) {
+    for (var i = 0; i < array.length; i++) if (array[i]) return array[i];
 }

@@ -146,6 +146,7 @@ call does a coercive `qassert.deepEquls` instead.
 Change Log
 ----------
 
+- 1.6.6 - do not annotate non-AssertionErrors rethrown from `throws()`, which can be non-objects or null
 - 1.6.5 - normalize assertion error messages
 - 1.6.4 - fix AssertionError stack trace to omit qassert internal functions
 - 1.6.3 - fix assert.fail deprecation notice, fix possible message annotation mis-positioning

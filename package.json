@@ -1,6 +1,6 @@
 {
     "name": "qassert",
-    "version": "1.6.5",
+    "version": "1.6.6",
     "description": "nicer, improved assert",
     "main": "qassert.js",
     "keywords": ["assert"],
