@@ -168,6 +168,8 @@ function fail( actual, expected, message, operator, stackStartFunction ) {
         operator: operator,
         stackStartFn: stackStartFunction
     })
+    // older node do not automatically capture a stack trace
+    err.stack.indexOf('\n') > 0 || Error.captureStackTrace(err, stackStartFunction);
     err.generatedMessage = (message === undefined);
     throw err;
 }
