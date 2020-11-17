@@ -7,6 +7,7 @@
 
 'use strict';
 
+var util = require('util');
 var assert = require('assert');
 var __contains = require('./contains');
 
@@ -157,9 +158,10 @@ function _inorder(a, compar, m) {
 // and should not be re-failed.
 function fail( actual, expected, message, operator, stackStartFunction ) {
     // node-v10 and up deprecate the multi-argument form of assert.fail, use AssertionError
+    var inspectOpts = { showHidden: true, depth: 4, maxArrayLength: 10, breakLength: 10 };
     var err = new assert.AssertionError({
         // ensure a canonical "actual op expected: msg" error message
-        message: actual + ' ' + operator + ' ' + expected + ': ' + (message || 'fail'),
+        message: util.inspect(actual, inspectOpts) + ' ' + operator + ' ' + util.inspect(expected, inspectOpts) + ': ' + (message || 'fail'),
         generatedMessage: message === undefined,
         actual: actual,
         expected: expected,
