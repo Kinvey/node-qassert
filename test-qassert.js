@@ -192,13 +192,18 @@ assert.throws(function(){ assert(qassert.notStrictContains(["1",2], "1")) });
 // test does throw the expected error
 try { qassert.throws(function(){ /* no throw */ }, 'appended diagnostic') }
 catch (e) { assert.ok(e.message.indexOf('appended diagnostic') > 0) }
-try { qassert.throws(function(){ /* no throw */ }, 'invalid test-to', 'appended diagnostic') }
+try { qassert.throws(function(){ /* no throw */ }, /invalid test-to/, 'appended diagnostic') }
 catch (e) { assert.ok(e.message.indexOf('appended diagnostic') > 0) }
+// Newer node throw a TypeError on an invalid (string) expected exception in the three-argument form
+// try { qassert.throws(function(){ /* no throw */ }, 'invalid test-to', 'appended diagnostic') }
+// catch (e) { assert.ok(e.message.indexOf('appended diagnostic') > 0) }
 
 qassert.throws(function() { throw new Error() });
 qassert.throws(function() { throw 'string' });
-qassert.throws(function() { throw false });
-qassert.throws(function() { throw 0 });
+// NOTE: in older node assert.throws() did not treat a falsy error as a throw having occurred.
+// qassert.throws(function() { throw false });
+// qassert.throws(function() { throw 0 });
+// qassert.throws(function() { throw null });
 qassert.throws(function() { throw 'non-object' });
 
 try { qassert.throws(function(){ throw 'string A' }, 'expect string B') }

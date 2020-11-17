@@ -106,17 +106,17 @@ function _notStrictEqual(a,b,m) {
 function _throws(a,e,m) {
     if (this && this.assertionCount !== undefined) this.assertionCount += 1;
     try {
-        if (e instanceof Error || e instanceof RegExp || typeof e === 'function') {
-            // the expected e can be an Error, a RegExp, or a validator function (or, in newer node, an object)
-            assert.throws(a, e);
-        } else {
-            if (m === undefined) m = e; // two-argument form
-            assert.throws(a);
-        }
-    } catch (err) {
-        // NOTE: nodejs rethrows the user error if it does not match the expected, even when a non-object
-        // NOTE: It might be better to always fail from here with an AssertionError... TBD.
-        // NOTE: without an AssertionError cannot distinguish test failure from code crash
+        // recognize the two-argument form of the call
+        if (typeof e === 'string' && m === undefined) { m = e; e = undefined }
+
+        // Nodejs assert.throws() prior to node-v8 did not consider a falsy error as having been thrown.
+        // We pass through the native nodejs behavior.
+        assert.throws(a, e, m);
+    }
+    catch (err) {
+        // Nodejs rethrows the user error if it does not match the expected, even when a non-object
+        // It might be better to always fail from here with an AssertionError... TBD
+        //   since without an AssertionError cannot distinguish test failure from code crash.
 
         // node-v0.6 assigns the 'Missing expected exception' message to err.actual, not err.message
         var altMessage = findFirst([false, err.message, err.actual]); // fix node-v0.6 err.message, `false` added for code cov
