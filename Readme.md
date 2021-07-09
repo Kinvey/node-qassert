@@ -146,6 +146,8 @@ call does a coercive `qassert.deepEquls` instead.
 Change Log
 ----------
 
+- 1.6.8 - fix `includes` for objects that do not have a constructor (like node-v12 req._headers)
+- 1.6.7 - make `throws` treat falsy errors like the running node version, inspect the expected vs actual values
 - 1.6.6 - do not annotate non-AssertionErrors rethrown from `throws()`, which can be non-objects or null
 - 1.6.5 - normalize assertion error messages
 - 1.6.4 - fix AssertionError stack trace to omit qassert internal functions

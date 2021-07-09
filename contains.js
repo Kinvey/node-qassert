@@ -107,7 +107,7 @@ function deepEqual( a, b, asStrict ) {
 // TODO: isContainer really means isHash, and should be implemented as such
 var dataObjectTypes = ['Array', 'Buffer', 'Date', 'RegExp'];
 function isContainerObject( a ) {
-    return (a && typeof a === 'object' && dataObjectTypes.indexOf(a.constructor.name) < 0);
+    return (a && typeof a === 'object' && dataObjectTypes.indexOf(a.constructor && a.constructor.name || 'Object') < 0);
 }
 function isHash( item ) {
     return item && typeof item === 'object' && item.constructor === Object;
