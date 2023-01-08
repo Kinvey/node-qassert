@@ -3,7 +3,7 @@ qassert
 
 Nodejs `assert` with useful new features and fewer rough edges.
 
-[![Build Status](https://travis-ci.org/andrasq/node-qassert.svg?branch=master)](https://travis-ci.org/andrasq/node-qassert)
+[![Build Status](https://app.travis-ci.com/github/andrasq/node-qassert.svg?branch=master)](https://app.travis-ci.com/github/andrasq/node-qassert)
 [![Coverage Status](https://coveralls.io/repos/github/andrasq/node-qassert/badge.svg?branch=master)](https://coveralls.io/github/andrasq/node-qassert?branch=master)
 
 

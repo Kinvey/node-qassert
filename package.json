@@ -5,10 +5,8 @@
     "main": "qassert.js",
     "keywords": ["assert"],
     "repository": "git://github.com/andrasq/node-qassert#readme",
-    "dependencies": {
-    },
-    "devDependencies": {
-    },
+    "files": ["qassert.js", "contains.js", "Readme.md", "LICENSE"],
+
     "scripts": {
         "test": "node test-*",
         "coverage": "nyc --reporter lcov --reporter text npm run test",
