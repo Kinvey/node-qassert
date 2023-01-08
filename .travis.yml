@@ -3,7 +3,7 @@ node_js:
   - 5.8.0
 
 before_install:
-  - npm install qnit
+  #- npm install qnit
   - mkdir -p $HOME/bin $HOME/lib2 $HOME/lib
   - test -x ./node_modules/.bin/npm || npm install npm@2.15.0
   - test -d ./node_modules && cp -rpf ./node_modules $HOME/lib2/ || true
