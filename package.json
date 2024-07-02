@@ -1,12 +1,18 @@
 {
-    "name": "qassert",
+    "name": "@progresskinvey/qassert",
     "version": "1.6.9",
     "description": "nicer, improved assert",
     "main": "qassert.js",
-    "keywords": ["assert"],
+    "keywords": [
+        "assert"
+    ],
     "repository": "git://github.com/andrasq/node-qassert#readme",
-    "files": ["qassert.js", "contains.js", "Readme.md", "LICENSE"],
-
+    "files": [
+        "qassert.js",
+        "contains.js",
+        "Readme.md",
+        "LICENSE"
+    ],
     "scripts": {
         "test": "node test-*",
         "coverage": "nyc --reporter lcov --reporter text npm run test",
